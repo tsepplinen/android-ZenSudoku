@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
             final TextView textView = new TextView(this);
             textView.setText("" + ((i-1) % 9 + 1) );
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
 
             row.addView(textView);
             if (i % 9 == 0) {

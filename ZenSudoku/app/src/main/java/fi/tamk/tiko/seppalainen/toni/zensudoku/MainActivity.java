@@ -5,41 +5,48 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private TableLayout sudokuContainer;
-    private TextView selectedButton;
+    private TextView selectedCell;
+    private LinearLayout numbersContainer;
+    private CellSelectListener cellSelectListener;
+    private NumberSelectListener numberSelectListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        cellSelectListener = new CellSelectListener(this);
+        numberSelectListener = new NumberSelectListener(this);
+
+        int buttonSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+
         sudokuContainer = (TableLayout) findViewById(R.id.sudokuContainer);
         TableRow row = new TableRow(sudokuContainer.getContext());
         sudokuContainer.addView(row);
 
-
         for (int i = 1; i <= 81; i++) {
 
             final TextView button = new TextView(this);
-            button.setText("" + ((i-1) % 9 + 1) );
+            button.setText("");
             button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
             button.setBackgroundResource(R.drawable.cell);
             button.setGravity(Gravity.CENTER);
             row.addView(button);
 
-            int pixels = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
             TableRow.LayoutParams params = (TableRow.LayoutParams) button.getLayoutParams();
-            params.width =  pixels;
-            params.height =  pixels;
+            params.width = buttonSize;
+            params.height = buttonSize;
             button.setLayoutParams(params);
 
-            button.setOnClickListener(this);
+            button.setOnClickListener(cellSelectListener);
 
             if (i % 9 == 0) {
                 // create new row
@@ -48,15 +55,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
+        numbersContainer = (LinearLayout) findViewById(R.id.numbersContainer);
+
+        for (int i = 1; i <= 9; i++) {
+            TextView button = new TextView(this);
+            button.setText("" + i);
+            button.setGravity(Gravity.CENTER);
+            numbersContainer.addView(button);
+
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) button.getLayoutParams();
+            params.width = buttonSize;
+            params.height = buttonSize;
+            button.setLayoutParams(params);
+
+            button.setOnClickListener(numberSelectListener);
+
+        }
+
     }
 
-    @Override
-    public void onClick(View v) {
-        if (this.selectedButton != null) {
-            this.selectedButton.setBackgroundResource(R.drawable.cell);
+    public void selectCell(View v) {
+        if (this.selectedCell != null) {
+            this.selectedCell.setBackgroundResource(R.drawable.cell);
         }
-        this.selectedButton = (TextView) v;
+        this.selectedCell = (TextView) v;
         v.setBackgroundResource(R.drawable.selected);
+    }
 
+    public void selectNumber(View v) {
+        if (selectedCell != null) {
+            TextView textViev = (TextView) v;
+            selectedCell.setText(textViev.getText());
+        }
     }
 }

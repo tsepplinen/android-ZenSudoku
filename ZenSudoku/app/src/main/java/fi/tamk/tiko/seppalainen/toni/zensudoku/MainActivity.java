@@ -10,6 +10,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private TableLayout sudokuContainer;
@@ -32,10 +34,17 @@ public class MainActivity extends AppCompatActivity {
         TableRow row = new TableRow(sudokuContainer.getContext());
         sudokuContainer.addView(row);
 
+        ArrayList<Integer> sudokuData = SudokuProvider.getSudoku();
+
         for (int i = 1; i <= 81; i++) {
 
             final TextView button = new TextView(this);
-            button.setText("");
+
+            if (sudokuData.get(i-1) != 0) {
+                button.setText("" + sudokuData.get(i-1));
+            } else {
+                button.setText("");
+            }
             button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
             button.setBackgroundResource(R.drawable.cell);
             button.setGravity(Gravity.CENTER);

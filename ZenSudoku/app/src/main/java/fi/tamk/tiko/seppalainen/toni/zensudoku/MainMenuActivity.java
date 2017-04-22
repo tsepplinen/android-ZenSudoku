@@ -13,10 +13,11 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     public void handleButtonClick(View view) {
-        if (view.getId() == R.id.play_button) {
-            System.out.println("MainMenuActivity.handleButtonClick play");
-        } else if (view.getId() == R.id.exit_button) {
-            System.out.println("MainMenuActivity.handleButtonClick exit");
+        if (view.getId() == R.id.play_easy_button) {
+
+        } else if (view.getId() == R.id.play_medium_button) {
+
+        } else if (view.getId() == R.id.play_medium_button) {
         }
     }
 }

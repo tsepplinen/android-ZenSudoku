@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ZenSudoku</string>
+    <string name="main_menu_play_button_text">Play</string>
+    <string name="main_menu_exit_button_text">Exit</string>
 </resources>

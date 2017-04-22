@@ -23,7 +23,7 @@ public class MainMenuActivity extends AppCompatActivity {
             difficulty = Difficulty.HARD;
         }
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, PlayActivity.class);
         intent.putExtra("difficulty", difficulty);
         startActivity(intent);
     }

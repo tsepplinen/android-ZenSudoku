@@ -3,14 +3,14 @@ package fi.tamk.tiko.seppalainen.toni.zensudoku;
 import android.view.View;
 
 class CellSelectListener implements View.OnClickListener {
-    private MainActivity mainActivity;
+    private PlayActivity playActivity;
 
-    public CellSelectListener(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    public CellSelectListener(PlayActivity playActivity) {
+        this.playActivity = playActivity;
     }
 
     @Override
     public void onClick(View v) {
-        mainActivity.selectCell(v);
+        playActivity.selectCell(v);
     }
 }

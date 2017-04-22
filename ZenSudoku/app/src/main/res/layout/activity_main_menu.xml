@@ -17,6 +17,7 @@
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:onClick="handleButtonClick"
         />
 
     <Button
@@ -29,6 +30,7 @@
         app:layout_constraintVertical_chainStyle="packed"
 
         app:layout_constraintLeft_toLeftOf="@+id/play_button"
+        android:onClick="handleButtonClick"
         />
 
 </android.support.constraint.ConstraintLayout>

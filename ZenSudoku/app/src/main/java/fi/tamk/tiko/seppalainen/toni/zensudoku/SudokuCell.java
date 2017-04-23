@@ -19,6 +19,7 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
     private int value;
     private boolean highlight;
     private boolean select;
+    private boolean numberHighlight;
 
     public SudokuCell(Context context) {
         super(context);
@@ -99,6 +100,14 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
 
         if (highlight != shouldHighlight) {
             highlight = shouldHighlight;
+            updateDrawable();
+        }
+    }
+
+    public void setNumberHighlight(boolean shouldHighlight) {
+
+        if (numberHighlight != shouldHighlight) {
+            numberHighlight = shouldHighlight;
             updateDrawable();
         }
     }

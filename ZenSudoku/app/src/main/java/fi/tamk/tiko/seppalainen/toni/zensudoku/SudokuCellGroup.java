@@ -27,4 +27,10 @@ class SudokuCellGroup {
             cell.setHighlight(shouldHighlight);
         }
     }
+
+    public void setNumberHighlight(boolean shouldHighlight) {
+        for (SudokuCell cell : cells) {
+            cell.setNumberHighlight(shouldHighlight);
+        }
+    }
 }

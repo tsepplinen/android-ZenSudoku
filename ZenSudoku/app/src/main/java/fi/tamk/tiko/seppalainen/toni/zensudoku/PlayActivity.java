@@ -19,6 +19,7 @@ public class PlayActivity extends AppCompatActivity {
     private LinearLayout numbersContainer;
     private CellSelectListener cellSelectListener;
     private NumberSelectListener numberSelectListener;
+    private SudokuGrid sudokuGrid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,9 @@ public class PlayActivity extends AppCompatActivity {
         sudokuContainer.addView(row);
 
         ArrayList<Integer> sudokuData = SudokuProvider.getSudoku();
+
+        sudokuGrid = new SudokuGrid();
+        sudokuGrid.setSudoku(sudokuData);
 
         for (int i = 1; i <= 81; i++) {
 

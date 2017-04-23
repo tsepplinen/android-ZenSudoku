@@ -95,13 +95,13 @@ public class SudokuGrid {
 
     public void selectCell(SudokuCell cell) {
         if (selectedCell != null) {
-            selectedCell.setBackgroundResource(R.drawable.cell);
+            selectedCell.setSelect(false);
 
             selectedCell.getRowGroup().setHighlight(false);
             selectedCell.getColumnGroup().setHighlight(false);
         }
         this.selectedCell = cell;
-        cell.setBackgroundResource(R.drawable.selected);
+        selectedCell.setSelect(true);
 
         cell.getRowGroup().setHighlight(true);
         cell.getColumnGroup().setHighlight(true);

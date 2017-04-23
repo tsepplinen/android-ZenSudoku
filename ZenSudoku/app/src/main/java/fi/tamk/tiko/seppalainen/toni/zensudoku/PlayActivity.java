@@ -20,6 +20,7 @@ public class PlayActivity extends AppCompatActivity {
     private CellSelectListener cellSelectListener;
     private NumberSelectListener numberSelectListener;
     private SudokuGrid sudokuGrid;
+    private int selectedNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +61,8 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void selectNumber(View v) {
-        if (selectedCell != null) {
-            TextView textViev = (TextView) v;
-            selectedCell.setText(textViev.getText());
-        }
+        TextView textView = (TextView) v;
+        selectedNumber = Integer.parseInt(String.valueOf(textView.getText()));
+        sudokuGrid.placeNumberToSelected(selectedNumber);
     }
 }

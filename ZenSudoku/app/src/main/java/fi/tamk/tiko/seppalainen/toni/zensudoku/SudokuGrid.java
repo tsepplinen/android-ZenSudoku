@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.util.TypedValue;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +17,12 @@ public class SudokuGrid {
     private ArrayList<SudokuCellGroup> columns;
     private ArrayList<SudokuCellGroup> squares;
     private SudokuCell selectedCell;
+    private NumberGroupManager numberGroupManager;
 
     public SudokuGrid(Activity parent, CellSelectListener cellSelectListener) {
         this.parent = parent;
         this.cellSelectListener = cellSelectListener;
+        this.numberGroupManager = new NumberGroupManager();
     }
 
     public void setSudoku(List<Integer> sudokuData) {
@@ -42,6 +43,7 @@ public class SudokuGrid {
                 final SudokuCell cell = new SudokuCell(parent, x, y);
                 cell.setOnClickListener(cellSelectListener);
                 cell.setInitialValue(sudokuData.get(index));
+                numberGroupManager.add(cell);
                 index++;
 
                 tableRow.addView(cell);
@@ -100,16 +102,25 @@ public class SudokuGrid {
             selectedCell.getRowGroup().setHighlight(false);
             selectedCell.getColumnGroup().setHighlight(false);
         }
+
         this.selectedCell = cell;
         selectedCell.setSelect(true);
 
         cell.getRowGroup().setHighlight(true);
         cell.getColumnGroup().setHighlight(true);
+
+        numberGroupManager.highlightNumbers(cell.getValue());
     }
 
     public void placeNumberToSelected(int number) {
         if (selectedCell != null) {
-            selectedCell.setValue(number);
+            int oldValue = selectedCell.getValue();
+            if (oldValue != number) {
+                numberGroupManager.remove(selectedCell);
+                selectedCell.setValue(number);
+                numberGroupManager.add(selectedCell);
+                numberGroupManager.highlightNumbers(number);
+            }
         }
     }
 }

@@ -18,4 +18,12 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
         setBackgroundResource(R.drawable.cell);
         setGravity(Gravity.CENTER);
     }
+
+    public void setInitialValue(Integer initialValue) {
+        if (initialValue != 0) {
+            setText("" + initialValue);
+        } else {
+            setText("");
+        }
+    }
 }

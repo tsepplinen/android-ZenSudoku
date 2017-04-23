@@ -28,32 +28,27 @@ public class SudokuGrid {
         int buttonSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, parent.getResources().getDisplayMetrics());
 
         sudokuContainer = (TableLayout) parent.findViewById(R.id.sudokuContainer);
-        TableRow row = new TableRow(sudokuContainer.getContext());
-        sudokuContainer.addView(row);
+
+        int index = 0;
+        for (int y = 1; y <= 9; y++) {
+            // create new row
+            TableRow row = new TableRow(sudokuContainer.getContext());
+            sudokuContainer.addView(row);
+
+            for (int x = 1; x <= 9; x++) {
+                final SudokuCell cell = new SudokuCell(parent);
+                cell.setOnClickListener(cellSelectListener);
+                cell.setInitialValue(sudokuData.get(index));
+                index++;
+
+                row.addView(cell);
+
+                TableRow.LayoutParams params = (TableRow.LayoutParams) cell.getLayoutParams();
+                params.width = buttonSize;
+                params.height = buttonSize;
+                cell.setLayoutParams(params);
 
 
-        for (int i = 1; i <= 81; i++) {
-
-            final SudokuCell cell = new SudokuCell(parent);
-
-            if (sudokuData.get(i-1) != 0) {
-                cell.setText("" + sudokuData.get(i-1));
-            } else {
-                cell.setText("");
-            }
-            row.addView(cell);
-
-            TableRow.LayoutParams params = (TableRow.LayoutParams) cell.getLayoutParams();
-            params.width = buttonSize;
-            params.height = buttonSize;
-            cell.setLayoutParams(params);
-
-            cell.setOnClickListener(cellSelectListener);
-
-            if (i % 9 == 0) {
-                // create new row
-                row = new TableRow(sudokuContainer.getContext());
-                sudokuContainer.addView(row);
             }
         }
     }

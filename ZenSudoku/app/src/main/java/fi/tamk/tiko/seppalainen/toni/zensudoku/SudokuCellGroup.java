@@ -33,4 +33,8 @@ class SudokuCellGroup {
             cell.setNumberHighlight(shouldHighlight);
         }
     }
+
+    public void removeCell(SudokuCell cell) {
+        cells.remove(cell);
+    }
 }

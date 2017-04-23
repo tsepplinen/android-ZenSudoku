@@ -4,15 +4,15 @@ import android.view.View;
 
 class NumberSelectListener implements View.OnClickListener {
 
-    private MainActivity mainActivity;
+    private PlayActivity playActivity;
 
-    public NumberSelectListener(MainActivity mainActivity) {
+    public NumberSelectListener(PlayActivity playActivity) {
 
-        this.mainActivity = mainActivity;
+        this.playActivity = playActivity;
     }
 
     @Override
     public void onClick(View v) {
-        mainActivity.selectNumber(v);
+        playActivity.selectNumber(v);
     }
 }

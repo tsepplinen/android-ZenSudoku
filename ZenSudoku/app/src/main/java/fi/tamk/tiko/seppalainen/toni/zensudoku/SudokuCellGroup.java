@@ -21,4 +21,8 @@ class SudokuCellGroup {
     public void addCell(SudokuCell cell) {
         cells.add(cell);
     }
+
+    public void setHighlight(boolean value) {
+
+    }
 }

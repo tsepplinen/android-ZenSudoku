@@ -90,4 +90,8 @@ public class SudokuGrid {
             squares.add(new SudokuCellGroup());
         }
     }
+
+    public void selectCell() {
+
+    }
 }

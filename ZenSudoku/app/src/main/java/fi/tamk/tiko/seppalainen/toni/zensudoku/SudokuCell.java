@@ -108,7 +108,10 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
     }
 
     private void updateDrawable() {
-        if (highlight) {
+
+        if (select) {
+            setBackgroundResource(R.drawable.selected);
+        } else if (highlight) {
             setBackgroundResource(R.drawable.highlighted);
         } else {
             setBackgroundResource(R.drawable.cell);

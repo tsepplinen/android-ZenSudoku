@@ -29,41 +29,12 @@ public class PlayActivity extends AppCompatActivity {
         cellSelectListener = new CellSelectListener(this);
         numberSelectListener = new NumberSelectListener(this);
 
-        int buttonSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
-
-        sudokuContainer = (TableLayout) findViewById(R.id.sudokuContainer);
-        TableRow row = new TableRow(sudokuContainer.getContext());
-        sudokuContainer.addView(row);
+        int buttonSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, this.getResources().getDisplayMetrics());
 
         ArrayList<Integer> sudokuData = SudokuProvider.getSudoku();
 
-        sudokuGrid = new SudokuGrid();
+        sudokuGrid = new SudokuGrid(this, cellSelectListener);
         sudokuGrid.setSudoku(sudokuData);
-
-        for (int i = 1; i <= 81; i++) {
-
-            final SudokuCell cell = new SudokuCell(this);
-
-            if (sudokuData.get(i-1) != 0) {
-                cell.setText("" + sudokuData.get(i-1));
-            } else {
-                cell.setText("");
-            }
-            row.addView(cell);
-
-            TableRow.LayoutParams params = (TableRow.LayoutParams) cell.getLayoutParams();
-            params.width = buttonSize;
-            params.height = buttonSize;
-            cell.setLayoutParams(params);
-
-            cell.setOnClickListener(cellSelectListener);
-
-            if (i % 9 == 0) {
-                // create new row
-                row = new TableRow(sudokuContainer.getContext());
-                sudokuContainer.addView(row);
-            }
-        }
 
         numbersContainer = (LinearLayout) findViewById(R.id.numbersContainer);
 

@@ -90,8 +90,13 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
         }
     }
 
-    public void setHighlight(boolean value) {
-        this.highlight = value;
+    public void setHighlight(boolean shouldHighlight) {
+        if (!highlight && shouldHighlight) {
+            setBackgroundResource(R.drawable.highlighted);
+        } else if (highlight && !shouldHighlight) {
+            setBackgroundResource(R.drawable.highlighted);
+        }
+        highlight = shouldHighlight;
     }
 }
 

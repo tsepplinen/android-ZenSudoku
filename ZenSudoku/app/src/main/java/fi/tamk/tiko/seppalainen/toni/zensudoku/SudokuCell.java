@@ -16,6 +16,7 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
     private SudokuCellGroup columnGroup;
     private SudokuCellGroup rowGroup;
     private SudokuCellGroup squareGroup;
+    private int value;
 
     public SudokuCell(Context context) {
         super(context);
@@ -35,12 +36,8 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
         setGravity(Gravity.CENTER);
     }
 
-    public void setInitialValue(Integer initialValue) {
-        if (initialValue != 0) {
-            setText("" + initialValue);
-        } else {
-            setText("");
-        }
+    public void setInitialValue(int initialValue) {
+        setValue(initialValue);
     }
 
     public int getCellX() {
@@ -82,4 +79,14 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
     public SudokuCellGroup getSquareGroup() {
         return squareGroup;
     }
+
+    public void setValue(int number) {
+        this.value = number;
+        if (number != 0) {
+            setText("" + number);
+        } else {
+            setText("");
+        }
+    }
 }
+

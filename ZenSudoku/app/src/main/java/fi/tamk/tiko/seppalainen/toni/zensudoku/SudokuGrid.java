@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.util.TypedValue;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class SudokuGrid {
     private ArrayList<SudokuCellGroup> rows;
     private ArrayList<SudokuCellGroup> columns;
     private ArrayList<SudokuCellGroup> squares;
+    private SudokuCell selectedCell;
 
     public SudokuGrid(Activity parent, CellSelectListener cellSelectListener) {
         this.parent = parent;
@@ -91,7 +93,11 @@ public class SudokuGrid {
         }
     }
 
-    public void selectCell() {
-
+    public void selectCell(SudokuCell cell) {
+        if (this.selectedCell != null) {
+            this.selectedCell.setBackgroundResource(R.drawable.cell);
+        }
+        this.selectedCell = cell;
+        cell.setBackgroundResource(R.drawable.selected);
     }
 }

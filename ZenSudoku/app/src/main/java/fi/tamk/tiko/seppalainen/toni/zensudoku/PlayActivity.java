@@ -56,11 +56,7 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void selectCell(View v) {
-        if (this.selectedCell != null) {
-            this.selectedCell.setBackgroundResource(R.drawable.cell);
-        }
-        this.selectedCell = (TextView) v;
-        v.setBackgroundResource(R.drawable.selected);
+        sudokuGrid.selectCell((SudokuCell) v);
     }
 
     public void selectNumber(View v) {

@@ -100,4 +100,10 @@ public class SudokuGrid {
         this.selectedCell = cell;
         cell.setBackgroundResource(R.drawable.selected);
     }
+
+    public void placeNumberToSelected(int number) {
+        if (selectedCell != null) {
+            selectedCell.setValue(number);
+        }
+    }
 }

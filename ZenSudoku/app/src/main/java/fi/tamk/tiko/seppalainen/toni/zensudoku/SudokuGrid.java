@@ -2,21 +2,20 @@ package fi.tamk.tiko.seppalainen.toni.zensudoku;
 
 import android.app.Activity;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by tonis on 2017-04-23.
- */
 public class SudokuGrid {
 
     private TableLayout sudokuContainer;
     private Activity parent;
     private CellSelectListener cellSelectListener;
+    private ArrayList<SudokuCellGroup> rows;
+    private ArrayList<SudokuCellGroup> columns;
+    private ArrayList<SudokuCellGroup> squares;
 
     public SudokuGrid(Activity parent, CellSelectListener cellSelectListener) {
         this.parent = parent;
@@ -29,27 +28,66 @@ public class SudokuGrid {
 
         sudokuContainer = (TableLayout) parent.findViewById(R.id.sudokuContainer);
 
-        int index = 0;
-        for (int y = 1; y <= 9; y++) {
-            // create new row
-            TableRow row = new TableRow(sudokuContainer.getContext());
-            sudokuContainer.addView(row);
+        createEmptyCellGroups();
 
-            for (int x = 1; x <= 9; x++) {
-                final SudokuCell cell = new SudokuCell(parent);
+        int index = 0;
+        for (int y = 0; y < 9; y++) {
+            // create new row
+            TableRow tableRow = new TableRow(sudokuContainer.getContext());
+            sudokuContainer.addView(tableRow);
+
+            for (int x = 0; x < 9; x++) {
+                final SudokuCell cell = new SudokuCell(parent, x, y);
                 cell.setOnClickListener(cellSelectListener);
                 cell.setInitialValue(sudokuData.get(index));
                 index++;
 
-                row.addView(cell);
+                tableRow.addView(cell);
 
                 TableRow.LayoutParams params = (TableRow.LayoutParams) cell.getLayoutParams();
                 params.width = buttonSize;
                 params.height = buttonSize;
                 cell.setLayoutParams(params);
 
-
+                addToGroups(cell);
             }
+        }
+    }
+
+    private void addToGroups(SudokuCell cell) {
+        int x = cell.getCellX();
+        int y = cell.getCellY();
+
+        int squareNum = findSquareGroupFor(x, y);
+
+        SudokuCellGroup colGroup = columns.get(x);
+        colGroup.addCell(cell);
+        cell.setColumnGroup(colGroup);
+
+        SudokuCellGroup rowGroup = rows.get(y);
+        rowGroup.addCell(cell);
+        cell.setRowGroup(rowGroup);
+
+        SudokuCellGroup squareGroup = squares.get(squareNum);
+        squareGroup.addCell(cell);
+        cell.setSquareGroup(squareGroup);
+    }
+
+    private int findSquareGroupFor(int x, int y) {
+        int column = x / 3;
+        int row = y / 3;
+        return column + (row*3);
+    }
+
+    private void createEmptyCellGroups() {
+        rows = new ArrayList<>();
+        columns = new ArrayList<>();
+        squares = new ArrayList<>();
+
+        for (int i = 0; i < 9; i++) {
+            rows.add(new SudokuCellGroup());
+            columns.add(new SudokuCellGroup());
+            squares.add(new SudokuCellGroup());
         }
     }
 }

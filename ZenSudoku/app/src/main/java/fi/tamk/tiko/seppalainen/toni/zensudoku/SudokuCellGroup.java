@@ -22,7 +22,9 @@ class SudokuCellGroup {
         cells.add(cell);
     }
 
-    public void setHighlight(boolean value) {
-
+    public void setHighlight(boolean shouldHighlight) {
+        for (SudokuCell cell : cells) {
+            cell.setHighlight(shouldHighlight);
+        }
     }
 }

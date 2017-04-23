@@ -38,24 +38,21 @@ public class PlayActivity extends AppCompatActivity {
 
         for (int i = 1; i <= 81; i++) {
 
-            final TextView button = new TextView(this);
+            final SudokuCell cell = new SudokuCell(this);
 
             if (sudokuData.get(i-1) != 0) {
-                button.setText("" + sudokuData.get(i-1));
+                cell.setText("" + sudokuData.get(i-1));
             } else {
-                button.setText("");
+                cell.setText("");
             }
-            button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
-            button.setBackgroundResource(R.drawable.cell);
-            button.setGravity(Gravity.CENTER);
-            row.addView(button);
+            row.addView(cell);
 
-            TableRow.LayoutParams params = (TableRow.LayoutParams) button.getLayoutParams();
+            TableRow.LayoutParams params = (TableRow.LayoutParams) cell.getLayoutParams();
             params.width = buttonSize;
             params.height = buttonSize;
-            button.setLayoutParams(params);
+            cell.setLayoutParams(params);
 
-            button.setOnClickListener(cellSelectListener);
+            cell.setOnClickListener(cellSelectListener);
 
             if (i % 9 == 0) {
                 // create new row

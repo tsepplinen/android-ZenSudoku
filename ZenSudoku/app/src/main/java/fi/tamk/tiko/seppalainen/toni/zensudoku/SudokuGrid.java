@@ -94,11 +94,17 @@ public class SudokuGrid {
     }
 
     public void selectCell(SudokuCell cell) {
-        if (this.selectedCell != null) {
-            this.selectedCell.setBackgroundResource(R.drawable.cell);
+        if (selectedCell != null) {
+            selectedCell.setBackgroundResource(R.drawable.cell);
+
+            selectedCell.getRowGroup().setHighlight(false);
+            selectedCell.getColumnGroup().setHighlight(false);
         }
         this.selectedCell = cell;
         cell.setBackgroundResource(R.drawable.selected);
+
+        cell.getRowGroup().setHighlight(true);
+        cell.getColumnGroup().setHighlight(true);
     }
 
     public void placeNumberToSelected(int number) {

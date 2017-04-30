@@ -14,17 +14,21 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     public void handleButtonClick(View view) {
-        Difficulty difficulty = null;
+        Difficulty difficulty = Difficulty.EASY;
+        boolean shouldContinue = false;
         if (view.getId() == R.id.play_easy_button) {
             difficulty = Difficulty.EASY;
         } else if (view.getId() == R.id.play_medium_button) {
             difficulty = Difficulty.MEDIUM;
-        } else if (view.getId() == R.id.play_medium_button) {
+        } else if (view.getId() == R.id.play_hard_button) {
             difficulty = Difficulty.HARD;
+        } else if (view.getId() == R.id.continue_game_button) {
+            shouldContinue = true;
         }
 
         Intent intent = new Intent(this, PlayActivity.class);
         intent.putExtra("difficulty", difficulty);
+        intent.putExtra("continue", shouldContinue);
         startActivity(intent);
     }
 }

@@ -20,6 +20,7 @@ public class SudokuGrid {
     private ArrayList<SudokuCellGroup> squares;
     private SudokuCell selectedCell;
     private NumberGroupManager numberGroupManager;
+    private Sudoku sudokuData;
 
     public SudokuGrid(Activity parent, CellSelectListener cellSelectListener) {
         this.parent = parent;
@@ -28,6 +29,7 @@ public class SudokuGrid {
     }
 
     public void setSudoku(Sudoku sudokuData) {
+        this.sudokuData = sudokuData;
 
         int buttonSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, parent.getResources().getDisplayMetrics());
 
@@ -120,6 +122,7 @@ public class SudokuGrid {
             if (oldValue != number) {
                 numberGroupManager.remove(selectedCell);
                 selectedCell.setValue(number);
+                sudokuData.place(number, selectedCell.getCellX(), selectedCell.getCellY());
                 numberGroupManager.add(selectedCell);
                 numberGroupManager.highlightNumbers(number);
             }

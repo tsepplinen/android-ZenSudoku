@@ -2,26 +2,16 @@ package fi.tamk.tiko.seppalainen.toni.zensudoku;
 
 import java.util.ArrayList;
 
+import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
+
 public class SudokuProvider {
 
 
-    public static ArrayList<Integer> getSudoku() {
+    public static Sudoku getSudoku(int difficulty) {
+        return new Sudoku(difficulty);
+    }
 
-        // Create hardcoded mock sudoku
-        ArrayList<Integer> sudoku = new ArrayList<>();
-        for (int i = 0; i < 81; i++) {
-            sudoku.add(0);
-        }
-        sudoku.set(0, 5);
-        sudoku.set(14, 3);
-        sudoku.set(20, 6);
-        sudoku.set(27, 8);
-        sudoku.set(36, 7);
-        sudoku.set(40, 5);
-        sudoku.set(58, 9);
-        sudoku.set(66, 3);
-        sudoku.set(79, 7);
-
-        return sudoku;
+    public static Sudoku getSudoku(SaveManager.SavedSudokuGame loaded) {
+        return new Sudoku(loaded.seed, loaded.data, loaded.initial, loaded.result, loaded.difficulty);
     }
 }

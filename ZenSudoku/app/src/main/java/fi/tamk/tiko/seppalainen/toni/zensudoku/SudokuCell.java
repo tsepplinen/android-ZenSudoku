@@ -20,6 +20,7 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
     private boolean highlight;
     private boolean select;
     private boolean numberHighlight;
+    private boolean isInitial = false;
 
     public SudokuCell(Context context) {
         super(context);
@@ -40,6 +41,7 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
     }
 
     public void setInitialValue(int initialValue) {
+        this.isInitial = true;
         setValue(initialValue);
     }
 

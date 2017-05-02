@@ -29,6 +29,7 @@ public class PlayActivity extends AppCompatActivity {
     private Sudoku sudokuData;
     private View rootLayout;
     private FavouritesManager favouritesManager;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,15 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
+    private void initFavouriteButton() {
+        MenuItem item = menu.getItem(0);
+        if (favouritesManager.has(sudokuData.getSeed(), sudokuData.getDifficulty())) {
+            item.setIcon(android.R.drawable.btn_star_big_on);
+        } else {
+            item.setIcon(android.R.drawable.btn_star_big_off);
+        }
+    }
+
     @Override
     public void onBackPressed() {
         SaveManager saveManager = new SaveManager(this);
@@ -120,8 +130,12 @@ public class PlayActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.play_app_bar, menu);
+        this.menu = menu;
+        initFavouriteButton();
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -143,10 +157,11 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void favouritePuzzle() {
-        Snackbar snackbar = Snackbar
-                .make(rootLayout, "Puzzle added to favourites", Snackbar.LENGTH_LONG);
-        snackbar.show();
-        favouritesManager.add(sudokuData);
+        if (favouritesManager.add(sudokuData)) {
+            Snackbar snackbar = Snackbar
+                    .make(rootLayout, "Puzzle added to favourites", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
     }
 
     private void checkSudoku() {
@@ -161,5 +176,11 @@ public class PlayActivity extends AppCompatActivity {
     private void useHint() {
         sudokuData.useHint();
         sudokuGrid.refresh();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        favouritesManager.close();
     }
 }

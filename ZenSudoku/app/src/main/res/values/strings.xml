@@ -6,4 +6,5 @@
     <string name="main_menu_play_hard_button_text">Hard</string>
     <string name="play_action_hint_text">Hint</string>
     <string name="play_action_check_text">Check puzzle</string>
+    <string name="play_action_favourite_text">Add to favourites</string>
 </resources>

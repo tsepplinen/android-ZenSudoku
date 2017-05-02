@@ -314,7 +314,7 @@ public class Sudoku {
     }
 
     public void useHint() {
-        if (filledCells < 81) {
+        if (filledCells < 80) {
             int i = 0;
             for (i = rng.nextInt(81); i < 81; i++) {
                 // If cell is empty

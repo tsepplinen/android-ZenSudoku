@@ -28,6 +28,7 @@ public class PlayActivity extends AppCompatActivity {
     private boolean continueGame = false;
     private Sudoku sudokuData;
     private View rootLayout;
+    private FavouritesManager favouritesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class PlayActivity extends AppCompatActivity {
             sudokuData = SudokuProvider.getSudoku(difficulty);
         }
 
+        favouritesManager = new FavouritesManager(this);
 
         sudokuGrid = new SudokuGrid(this, cellSelectListener);
         sudokuGrid.setSudoku(sudokuData);
@@ -132,8 +134,19 @@ public class PlayActivity extends AppCompatActivity {
                 Toast.makeText(this, "Hint selected", Toast.LENGTH_LONG).show();
                 useHint();
                 return true;
+            case R.id.play_action_favourite:
+                favouritePuzzle();
+                item.setIcon(android.R.drawable.btn_star_big_on);
+                return true;
         }
         return false;
+    }
+
+    private void favouritePuzzle() {
+        Snackbar snackbar = Snackbar
+                .make(rootLayout, "Puzzle added to favourites", Snackbar.LENGTH_LONG);
+        snackbar.show();
+        favouritesManager.add(sudokuData);
     }
 
     private void checkSudoku() {
@@ -148,6 +161,5 @@ public class PlayActivity extends AppCompatActivity {
     private void useHint() {
         sudokuData.useHint();
         sudokuGrid.refresh();
-
     }
 }

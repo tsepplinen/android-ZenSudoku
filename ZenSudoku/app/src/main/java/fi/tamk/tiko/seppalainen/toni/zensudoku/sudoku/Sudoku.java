@@ -289,7 +289,6 @@ public class Sudoku {
     }
 
     public boolean isCorrect() {
-        if (filledCells == 81) {
             for (int i = 0; i < data.size(); i++) {
                 int placed = data.get(i).getNum();
                 int correct = resultData.get(i).getNum();
@@ -298,8 +297,6 @@ public class Sudoku {
                 }
             }
             return true;
-        }
-        return false;
     }
 
     public boolean isSolved() {
@@ -316,4 +313,27 @@ public class Sudoku {
         return false;
     }
 
+    public void useHint() {
+        if (filledCells < 81) {
+            int i = 0;
+            for (i = rng.nextInt(81); i < 81; i++) {
+                // If cell is empty
+                SudokuCell cell = data.get(i);
+                if (cell.getNum() == 0) {
+                    int correct = resultData.get(i).getNum();
+                    place(correct, cell.getX(), cell.getY());
+                    return;
+                }
+            }
+            for (i = 0; i < 81; i++) {
+                // If cell is empty
+                SudokuCell cell = data.get(i);
+                if (cell.getNum() == 0) {
+                    int correct = resultData.get(i).getNum();
+                    place(correct, cell.getX(), cell.getY());
+                    return;
+                }
+            }
+        }
+    }
 }

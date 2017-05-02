@@ -5,10 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
@@ -107,5 +111,43 @@ public class PlayActivity extends AppCompatActivity {
         Snackbar snackbar = Snackbar
                 .make(rootLayout, "Congratulations, you have finished the sudoku!", Snackbar.LENGTH_LONG);
         snackbar.show();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.play_app_bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.play_action_check:
+                checkSudoku();
+                return true;
+            case R.id.play_action_hint:
+                Toast.makeText(this, "Hint selected", Toast.LENGTH_LONG).show();
+                useHint();
+                return true;
+        }
+        return false;
+    }
+
+    private void checkSudoku() {
+        if (sudokuData.isCorrect()) {
+            Toast.makeText(this, "No errors found", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Errors found", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void useHint() {
+        sudokuData.useHint();
+        sudokuGrid.refresh();
+
     }
 }

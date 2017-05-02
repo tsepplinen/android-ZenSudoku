@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fi.tamk.tiko.seppalainen.toni.zensudoku.PlayActivity">
+    tools:context="fi.tamk.tiko.seppalainen.toni.zensudoku.PlayActivity"
+    android:id="@+id/play_root_layout">
 
     <TableLayout
         android:id="@+id/sudokuContainer"

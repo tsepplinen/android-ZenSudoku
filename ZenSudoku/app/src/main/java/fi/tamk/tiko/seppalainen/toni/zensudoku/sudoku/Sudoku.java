@@ -11,17 +11,17 @@ public class Sudoku {
 
     private final Random rng = new Random();
     private long seed;
-    List<NumberGroup> rows;
-    List<NumberGroup> columns;
-    List<NumberGroup> squares;
-    List<SudokuCell> data;
-    List<SudokuCell> initialData;
-    List<SudokuCell> resultData;
+    private List<NumberGroup> rows;
+    private List<NumberGroup> columns;
+    private List<NumberGroup> squares;
+    private List<SudokuCell> data;
+    private List<SudokuCell> initialData;
+    private List<SudokuCell> resultData;
     private ArrayList<Integer> index;
     private int difficulty;
 
     SudokuSolver solver = new SudokuSolver();
-    private int filledCells = 81;
+    private int filledCells = 0;
 
     public Sudoku(long seed, List<SudokuCell> data, List<SudokuCell> initialData, List<SudokuCell> resultData, int difficulty) {
         this.seed = seed;
@@ -71,6 +71,7 @@ public class Sudoku {
             index.add(i);
         }
         Collections.shuffle(index, rng);
+        filledCells = 81;
         boolean success = unsolve(0);
         System.out.println("success = " + success);
         // Save initial values
@@ -99,7 +100,6 @@ public class Sudoku {
         int num = cell.getNum();
         // Clear cell
         remove(cell.getX(), cell.getY());
-        filledCells--;
         boolean canRemove = (i < 2) || solver.isUnique(this);
 
         if (canRemove) {
@@ -109,7 +109,6 @@ public class Sudoku {
             }
         }
         place(num, cell.getX(), cell.getY());
-        filledCells++;
         return unsolve(i + 1);
     }
 
@@ -228,6 +227,12 @@ public class Sudoku {
         rows.get(y).add(num);
         columns.get(x).add(num);
         squares.get(getSquareIndex(x, y)).add(num);
+
+        if (num == 0) {
+            filledCells--;
+        } else {
+            filledCells++;
+        }
     }
 
     public int get(int x, int y) {
@@ -282,4 +287,33 @@ public class Sudoku {
     public int getDifficulty() {
         return difficulty;
     }
+
+    public boolean isCorrect() {
+        if (filledCells == 81) {
+            for (int i = 0; i < data.size(); i++) {
+                int placed = data.get(i).getNum();
+                int correct = resultData.get(i).getNum();
+                if (placed != 0 && placed != correct) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isSolved() {
+        if (filledCells == 81) {
+            for (int i = 0; i < data.size(); i++) {
+                int placed = data.get(i).getNum();
+                int correct = resultData.get(i).getNum();
+                if (placed != correct) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -1,5 +1,6 @@
 package fi.tamk.tiko.seppalainen.toni.zensudoku;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -7,10 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
@@ -25,11 +23,14 @@ public class PlayActivity extends AppCompatActivity {
     private int selectedNumber;
     private boolean continueGame = false;
     private Sudoku sudokuData;
+    private View rootLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
+        rootLayout = findViewById(R.id.play_root_layout);
 
         int difficulty = 50;
         Bundle extras = getIntent().getExtras();
@@ -97,5 +98,14 @@ public class PlayActivity extends AppCompatActivity {
         TextView textView = (TextView) v;
         selectedNumber = Integer.parseInt(String.valueOf(textView.getText()));
         sudokuGrid.placeNumberToSelected(selectedNumber);
+        if (sudokuData.isCorrect()) {
+            puzzleSolved();
+        }
+    }
+
+    private void puzzleSolved() {
+        Snackbar snackbar = Snackbar
+                .make(rootLayout, "Congratulations, you have finished the sudoku!", Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 }

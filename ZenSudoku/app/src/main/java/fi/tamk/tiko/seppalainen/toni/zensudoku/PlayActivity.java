@@ -175,6 +175,8 @@ public class PlayActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        SaveManager saveManager = new SaveManager(this);
+        saveManager.save(sudokuData);
         super.onDestroy();
         favouritesManager.close();
     }

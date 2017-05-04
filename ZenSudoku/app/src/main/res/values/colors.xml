@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorCellBG">#C5B8FF</color>
+    <color name="colorCellBorder">#000000</color>
+    <color name="colorHighlightBG">#A895FF</color>
+    <color name="colorNumberHighlightBG">#95FFA3</color>
+    <color name="colorSelectedBG">#3242FA</color>
 </resources>

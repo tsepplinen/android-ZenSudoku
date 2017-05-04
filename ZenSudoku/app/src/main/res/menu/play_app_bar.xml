@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/play_action_favourite"
+        android:checkable="true"
+        android:icon="@android:drawable/btn_star_big_off"
+        android:title="@string/play_action_favourite_text"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/play_action_hint"
+        android:icon="@android:drawable/ic_menu_help"
+        android:title="@string/play_action_hint_text"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/play_action_check"
+        android:title="@string/play_action_check_text"
+        app:showAsAction="never"/>
+
+
+</menu>

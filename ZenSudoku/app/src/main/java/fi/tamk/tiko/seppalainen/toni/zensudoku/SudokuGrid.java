@@ -128,4 +128,15 @@ public class SudokuGrid {
             }
         }
     }
+
+    public void refresh() {
+        for (int y = 0; y < rows.size(); y++) {
+            List<SudokuCell> row = rows.get(y).getCells();
+            int rowSize = row.size();
+            for (int x = 0; x < rowSize; x++) {
+                int num = sudokuData.get(x, y);
+                row.get(x).setValue(num);
+            }
+        }
+    }
 }

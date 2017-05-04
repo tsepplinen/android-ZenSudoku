@@ -1,16 +1,18 @@
 package fi.tamk.tiko.seppalainen.toni.zensudoku;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-
-import java.util.ArrayList;
+import android.widget.Toast;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
@@ -25,11 +27,16 @@ public class PlayActivity extends AppCompatActivity {
     private int selectedNumber;
     private boolean continueGame = false;
     private Sudoku sudokuData;
+    private View rootLayout;
+    private FavouritesManager favouritesManager;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
+        rootLayout = findViewById(R.id.play_root_layout);
 
         int difficulty = 50;
         Bundle extras = getIntent().getExtras();
@@ -60,6 +67,7 @@ public class PlayActivity extends AppCompatActivity {
             sudokuData = SudokuProvider.getSudoku(difficulty);
         }
 
+        favouritesManager = new FavouritesManager(this);
 
         sudokuGrid = new SudokuGrid(this, cellSelectListener);
         sudokuGrid.setSudoku(sudokuData);
@@ -82,6 +90,15 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
+    private void initFavouriteButton() {
+        MenuItem item = menu.getItem(0);
+        if (favouritesManager.has(sudokuData.getSeed(), sudokuData.getDifficulty())) {
+            item.setIcon(android.R.drawable.btn_star_big_on);
+        } else {
+            item.setIcon(android.R.drawable.btn_star_big_off);
+        }
+    }
+
     @Override
     public void onBackPressed() {
         SaveManager saveManager = new SaveManager(this);
@@ -97,5 +114,73 @@ public class PlayActivity extends AppCompatActivity {
         TextView textView = (TextView) v;
         selectedNumber = Integer.parseInt(String.valueOf(textView.getText()));
         sudokuGrid.placeNumberToSelected(selectedNumber);
+        if (sudokuData.isCorrect()) {
+            puzzleSolved();
+        }
+    }
+
+    private void puzzleSolved() {
+        Snackbar snackbar = Snackbar
+                .make(rootLayout, "Congratulations, you have finished the sudoku!", Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.play_app_bar, menu);
+        this.menu = menu;
+        initFavouriteButton();
+        return true;
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.play_action_check:
+                checkSudoku();
+                return true;
+            case R.id.play_action_hint:
+                Toast.makeText(this, "Hint selected", Toast.LENGTH_LONG).show();
+                useHint();
+                return true;
+            case R.id.play_action_favourite:
+                favouritePuzzle();
+                item.setIcon(android.R.drawable.btn_star_big_on);
+                return true;
+        }
+        return false;
+    }
+
+    private void favouritePuzzle() {
+        if (favouritesManager.add(sudokuData)) {
+            Snackbar snackbar = Snackbar
+                    .make(rootLayout, "Puzzle added to favourites", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+    }
+
+    private void checkSudoku() {
+        if (sudokuData.isCorrect()) {
+            Toast.makeText(this, "No errors found", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Errors found", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void useHint() {
+        sudokuData.useHint();
+        sudokuGrid.refresh();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        favouritesManager.close();
     }
 }

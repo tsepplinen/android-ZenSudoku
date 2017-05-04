@@ -13,6 +13,15 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SaveManager saveManager = new SaveManager(this);
+        if (!saveManager.hasSavedGame()) {
+            findViewById(R.id.continue_game_button).setEnabled(false);
+        }
+    }
+
     public void handleButtonClick(View view) {
         Difficulty difficulty = Difficulty.EASY;
         boolean shouldContinue = false;

@@ -31,6 +31,7 @@ public class PlayActivity extends AppCompatActivity {
     private View rootLayout;
     private FavouritesManager favouritesManager;
     private Menu menu;
+    private ButtonBox buttonBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +59,6 @@ public class PlayActivity extends AppCompatActivity {
         cellSelectListener = new CellSelectListener(this);
         numberSelectListener = new NumberSelectListener(this);
 
-        int buttonSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, this.getResources().getDisplayMetrics());
-
         SaveManager saveManager = new SaveManager(this);
         if (continueGame && saveManager.hasSavedGame()) {
             SaveManager.SavedSudokuGame loaded = saveManager.load();
@@ -73,22 +72,8 @@ public class PlayActivity extends AppCompatActivity {
         sudokuGrid = new SudokuGrid(this, cellSelectListener);
         sudokuGrid.setSudoku(sudokuData);
 
-        numbersContainer = (LinearLayout) findViewById(R.id.numbersContainer);
 
-        for (int i = 1; i <= 9; i++) {
-            TextView button = new TextView(this);
-            button.setText("" + i);
-            button.setGravity(Gravity.CENTER);
-            numbersContainer.addView(button);
-
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) button.getLayoutParams();
-            params.width = buttonSize;
-            params.height = buttonSize;
-            button.setLayoutParams(params);
-
-            button.setOnClickListener(numberSelectListener);
-
-        }
+        buttonBox = new ButtonBox(this, numberSelectListener);
     }
 
     private void initFavouriteButton() {
@@ -114,11 +99,16 @@ public class PlayActivity extends AppCompatActivity {
 
     public void selectNumber(View v) {
         TextView textView = (TextView) v;
-        selectedNumber = Integer.parseInt(String.valueOf(textView.getText()));
-        sudokuGrid.placeNumberToSelected(selectedNumber);
-        if (sudokuData.isSolved()) {
-            puzzleSolved();
+        if (textView.getText().equals("X")) {
+            sudokuGrid.placeNumberToSelected(0);
+        } else {
+            selectedNumber = Integer.parseInt(String.valueOf(textView.getText()));
+            sudokuGrid.placeNumberToSelected(selectedNumber);
+            if (sudokuData.isSolved()) {
+                puzzleSolved();
+            }
         }
+
     }
 
     private void puzzleSolved() {
@@ -147,7 +137,6 @@ public class PlayActivity extends AppCompatActivity {
                 checkSudoku();
                 return true;
             case R.id.play_action_hint:
-                Toast.makeText(this, "Hint selected", Toast.LENGTH_LONG).show();
                 useHint();
                 return true;
             case R.id.play_action_favourite:
@@ -186,6 +175,8 @@ public class PlayActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        SaveManager saveManager = new SaveManager(this);
+        saveManager.save(sudokuData);
         super.onDestroy();
         favouritesManager.close();
     }

@@ -99,6 +99,11 @@ public class SudokuGrid {
         }
     }
 
+    public void selectCell(int x, int y) {
+        SudokuCell cell = rows.get(y).getCells().get(x);
+        selectCell(cell);
+    }
+
     public void selectCell(SudokuCell cell) {
         if (selectedCell != null) {
             selectedCell.setSelect(false);

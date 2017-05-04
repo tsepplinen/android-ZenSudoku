@@ -114,7 +114,7 @@ public class PlayActivity extends AppCompatActivity {
         TextView textView = (TextView) v;
         selectedNumber = Integer.parseInt(String.valueOf(textView.getText()));
         sudokuGrid.placeNumberToSelected(selectedNumber);
-        if (sudokuData.isCorrect()) {
+        if (sudokuData.isSolved()) {
             puzzleSolved();
         }
     }
@@ -175,7 +175,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private void useHint() {
         sudokuData.useHint();
-        sudokuGrid.refresh();
+//        sudokuGrid.refresh();
     }
 
     @Override

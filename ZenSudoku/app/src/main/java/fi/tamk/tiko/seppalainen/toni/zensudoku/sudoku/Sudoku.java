@@ -223,6 +223,7 @@ public class Sudoku {
     }
 
     public void place(int num, int x, int y) {
+        int old = data.get(y * 9 + x).getNum();
         data.get(y * 9 + x).setNum(num);
         rows.get(y).add(num);
         columns.get(x).add(num);
@@ -230,7 +231,7 @@ public class Sudoku {
 
         if (num == 0) {
             filledCells--;
-        } else {
+        } else if (old == 0){
             filledCells++;
         }
     }
@@ -300,6 +301,8 @@ public class Sudoku {
     }
 
     public boolean isSolved() {
+        System.out.println("Sudoku.isSolved");
+        System.out.println("filledCells = " + filledCells);
         if (filledCells == 81) {
             for (int i = 0; i < data.size(); i++) {
                 int placed = data.get(i).getNum();

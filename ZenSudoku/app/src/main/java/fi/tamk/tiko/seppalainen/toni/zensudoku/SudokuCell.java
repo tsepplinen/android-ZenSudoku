@@ -132,6 +132,7 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView {
                 setText("" + number);
             } else {
                 setText("");
+                numberHighlight = false;
             }
         }
     }

@@ -3,4 +3,6 @@
     <dimen
         name="main_menu_button_width"
         >200dp</dimen>
+    <dimen name="cell_border_thick">1dp</dimen>
+    <dimen name="cell_border">0.5dp</dimen>
 </resources>

@@ -2,13 +2,14 @@ package fi.tamk.tiko.seppalainen.toni.zensudoku;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.view.Gravity;
 
 /**
  * Represents a cell in a sudoku grid.
  */
-public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
+public class SudokuCell extends android.support.v7.widget.AppCompatTextView {
 
     private final int TEXT_SIZE = 30;
     private int cellX = 0;
@@ -21,11 +22,9 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
     private boolean select;
     private boolean numberHighlight;
     private boolean isInitial = false;
-
-    public SudokuCell(Context context) {
-        super(context);
-        setupStyle();
-    }
+    private int defaultDrawable;
+    private int defaultHighlight;
+    private int defaultNumberHighlight;
 
     public SudokuCell(Activity parent, int x, int y) {
         super(parent);
@@ -36,13 +35,54 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
 
     private void setupStyle() {
         setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE);
-        setBackgroundResource(R.drawable.cell);
         setGravity(Gravity.CENTER);
+
+        setTypeface(Typeface.SANS_SERIF);
+
+        // Select default drawable from location
+        defaultDrawable = R.drawable.cell;
+        defaultHighlight = R.drawable.highlighted;
+        defaultNumberHighlight = R.drawable.number_highlighted;
+        boolean rightBorder = false;
+        boolean bottomBorder = false;
+        if (cellX == 2 || cellX == 5) {
+            rightBorder = true;
+        }
+        if (cellY == 2 || cellY == 5) {
+            bottomBorder = true;
+        }
+        if (bottomBorder && rightBorder) {
+            defaultDrawable = R.drawable.cell_border_bottom_right;
+            defaultHighlight = R.drawable.highlighted_border_bottom_right;
+            defaultNumberHighlight = R.drawable.highlighted_border_bottom_right;
+        } else if (bottomBorder) {
+            defaultDrawable = R.drawable.cell_border_bottom;
+            defaultHighlight = R.drawable.highlighted_border_bottom;
+            defaultNumberHighlight = R.drawable.number_highlighted_border_bottom;
+        } else if (rightBorder) {
+            defaultDrawable = R.drawable.cell_border_right;
+            defaultHighlight = R.drawable.highlighted_border_right;
+            defaultNumberHighlight = R.drawable.number_highlighted_border_right;
+        }
+
+
+        setBackgroundResource(defaultDrawable);
     }
 
     public void setInitialValue(int initialValue) {
-        this.isInitial = true;
-        setValue(initialValue);
+        if (initialValue != 0) {
+            if (!isInitial) {
+                this.isInitial = true;
+                setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
+            }
+            this.value = initialValue;
+            if (initialValue != 0) {
+                setText("" + initialValue);
+            } else {
+                setText("");
+            }
+        }
+
     }
 
     public int getCellX() {
@@ -86,11 +126,13 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
     }
 
     public void setValue(int number) {
-        this.value = number;
-        if (number != 0) {
-            setText("" + number);
-        } else {
-            setText("");
+        if (!isInitial) {
+            this.value = number;
+            if (number != 0) {
+                setText("" + number);
+            } else {
+                setText("");
+            }
         }
     }
 
@@ -127,11 +169,11 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView{
         if (select) {
             setBackgroundResource(R.drawable.selected);
         } else if (numberHighlight) {
-            setBackgroundResource(R.drawable.number_highlighted);
+            setBackgroundResource(defaultNumberHighlight);
         } else if (highlight) {
-            setBackgroundResource(R.drawable.highlighted);
+            setBackgroundResource(defaultHighlight);
         } else {
-            setBackgroundResource(R.drawable.cell);
+            setBackgroundResource(defaultDrawable);
         }
     }
 }

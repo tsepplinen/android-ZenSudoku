@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+<item>
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="rectangle"
+        android:padding="10dp">
+        <solid android:color="@color/colorCellBorder"/>
+    </shape>
+</item>
+<item android:bottom="@dimen/cell_border_thick" android:right="@dimen/cell_border_thick">
+    <shape android:shape="rectangle">
+        <solid android:color="@color/colorCellBG" />
+        <stroke
+            android:color="@color/colorCellBorder"
+            android:width="@dimen/cell_border"
+            />
+    </shape>
+</item>
+</layer-list>

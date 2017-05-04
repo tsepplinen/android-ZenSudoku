@@ -6,6 +6,10 @@ import android.util.SparseArray;
 class NumberGroupManager {
 
     private SparseArray<SudokuCellGroup> numberGroups;
+
+    /**
+     * Currently highlighted numbers value.
+     */
     private int currentHighlight = 0;
 
     public NumberGroupManager() {
@@ -22,10 +26,11 @@ class NumberGroupManager {
 
     public void highlightNumbers(int value) {
 
-        if (currentHighlight != value  && value != 0) {
+        // Selecting non empty value
+        if (value != 0) {
 
             SudokuCellGroup group = getGroup(currentHighlight);
-            if (group != null) {
+            if (group != null && currentHighlight != value) {
                 group.setNumberHighlight(false);
             }
 

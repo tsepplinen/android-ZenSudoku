@@ -54,7 +54,7 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView {
         if (bottomBorder && rightBorder) {
             defaultDrawable = R.drawable.cell_border_bottom_right;
             defaultHighlight = R.drawable.highlighted_border_bottom_right;
-            defaultNumberHighlight = R.drawable.highlighted_border_bottom_right;
+            defaultNumberHighlight = R.drawable.number_highlighted_border_bottom_right;
         } else if (bottomBorder) {
             defaultDrawable = R.drawable.cell_border_bottom;
             defaultHighlight = R.drawable.highlighted_border_bottom;

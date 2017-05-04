@@ -14,6 +14,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.HintData;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
 public class PlayActivity extends AppCompatActivity {
@@ -110,6 +111,7 @@ public class PlayActivity extends AppCompatActivity {
         sudokuGrid.selectCell((SudokuCell) v);
     }
 
+
     public void selectNumber(View v) {
         TextView textView = (TextView) v;
         selectedNumber = Integer.parseInt(String.valueOf(textView.getText()));
@@ -174,9 +176,13 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void useHint() {
-        sudokuData.useHint();
-//        sudokuGrid.refresh();
+        HintData hintData = sudokuData.useHint();
+        if (hintData != null) {
+            sudokuGrid.selectCell(hintData.x, hintData.y);
+            sudokuGrid.placeNumberToSelected(hintData.value);
+        }
     }
+
 
     @Override
     protected void onDestroy() {

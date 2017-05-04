@@ -316,7 +316,7 @@ public class Sudoku {
         return false;
     }
 
-    public void useHint() {
+    public HintData useHint() {
         if (filledCells < 80) {
             int i = 0;
             for (i = rng.nextInt(81); i < 81; i++) {
@@ -324,8 +324,10 @@ public class Sudoku {
                 SudokuCell cell = data.get(i);
                 if (cell.getNum() == 0) {
                     int correct = resultData.get(i).getNum();
+                    int x = cell.getX();
+                    int y = cell.getY();
                     place(correct, cell.getX(), cell.getY());
-                    return;
+                    return new HintData(x, y, correct);
                 }
             }
             for (i = 0; i < 81; i++) {
@@ -333,10 +335,13 @@ public class Sudoku {
                 SudokuCell cell = data.get(i);
                 if (cell.getNum() == 0) {
                     int correct = resultData.get(i).getNum();
+                    int x = cell.getX();
+                    int y = cell.getY();
                     place(correct, cell.getX(), cell.getY());
-                    return;
+                    return new HintData(x, y, correct);
                 }
             }
         }
+        return null;
     }
 }

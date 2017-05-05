@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
@@ -28,6 +29,7 @@ public class FavouritesManager extends SQLiteOpenHelper {
 
     private SQLiteDatabase writer;
     private SQLiteDatabase reader;
+    private ArrayList<Favourite> favourites;
 
     public FavouritesManager(Context context) {
         super(context, "SUDOKU_DB", null, 1);
@@ -93,6 +95,14 @@ public class FavouritesManager extends SQLiteOpenHelper {
     }
 
     public Favourite get(int position) {
-        return null;
+        try {
+            return favourites.get(position);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
+    public int getCount() {
+        return favourites.size();
     }
 }

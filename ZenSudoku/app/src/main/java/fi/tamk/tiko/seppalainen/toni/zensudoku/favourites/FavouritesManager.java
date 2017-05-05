@@ -128,4 +128,13 @@ public class FavouritesManager extends SQLiteOpenHelper {
     public int getCount() {
         return favourites.size();
     }
+
+    public boolean remove(Sudoku sudoku) {
+        long seed = sudoku.getSeed();
+        int difficulty = sudoku.getDifficulty();
+
+        String where = "seed = ? AND difficulty = ?";
+        String[] values = {""+seed, ""+difficulty};
+        return writer.delete(TABLE_NAME, where, values) > 0;
+    }
 }

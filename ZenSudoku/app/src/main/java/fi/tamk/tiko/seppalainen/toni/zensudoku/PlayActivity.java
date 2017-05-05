@@ -142,18 +142,25 @@ public class PlayActivity extends AppCompatActivity {
                 useHint();
                 return true;
             case R.id.play_action_favourite:
-                favouritePuzzle();
-                item.setIcon(android.R.drawable.btn_star_big_on);
+                favouritePuzzle(item);
                 return true;
         }
         return false;
     }
 
-    private void favouritePuzzle() {
-        if (favouritesManager.add(sudokuData)) {
+    private void favouritePuzzle(MenuItem item) {
+        if (favouritesManager.has(sudokuData.getSeed(), sudokuData.getDifficulty())) {
+            favouritesManager.remove(sudokuData);
+            Snackbar snackbar = Snackbar
+                    .make(rootLayout, "Puzzle removed from favourites", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            item.setIcon(android.R.drawable.btn_star_big_off);
+        } else if (favouritesManager.add(sudokuData)) {
             Snackbar snackbar = Snackbar
                     .make(rootLayout, "Puzzle added to favourites", Snackbar.LENGTH_LONG);
             snackbar.show();
+            item.setIcon(android.R.drawable.btn_star_big_on);
+
         }
     }
 

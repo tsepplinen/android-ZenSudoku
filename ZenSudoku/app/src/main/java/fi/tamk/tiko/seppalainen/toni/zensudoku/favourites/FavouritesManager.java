@@ -91,4 +91,8 @@ public class FavouritesManager extends SQLiteOpenHelper {
         cursor.close();
         return found;
     }
+
+    public Favourite get(int position) {
+        return null;
+    }
 }

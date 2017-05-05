@@ -13,7 +13,7 @@ public class FavouritesListAdapter extends RecyclerView.Adapter<FavouritesListVi
     private final FavouritesManager favouritesManager;
 
     public FavouritesListAdapter(Activity context) {
-        favouritesManager = new FavouritesManager(context);
+        favouritesManager = FavouritesManagerProvider.getFavouritesManager();
     }
 
     @Override

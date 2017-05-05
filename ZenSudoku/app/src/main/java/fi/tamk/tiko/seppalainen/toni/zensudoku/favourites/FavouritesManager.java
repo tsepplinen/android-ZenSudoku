@@ -34,37 +34,35 @@ public class FavouritesManager extends SQLiteOpenHelper {
         super(context, "SUDOKU_DB", null, 1);
         writer = getWritableDatabase();
         reader = getReadableDatabase();
-
         favourites = fetchFavourites();
     }
 
     private ArrayList<Favourite> fetchFavourites() {
-
         ArrayList<Favourite> list = new ArrayList<>();
 
-        String query = "SELECT * FROM ?";
-        String[] values = {TABLE_NAME};
-        Cursor cursor = reader.rawQuery(query, values);
+        if (reader.isOpen()) {
+            String query = "SELECT * FROM " + TABLE_NAME;
+            Cursor cursor = reader.rawQuery(query, null);
 
-        if(cursor.moveToFirst()) {
-            do {
-                long time = cursor.getLong(0);
-                int difficulty = cursor.getInt(2);
+            if(cursor.moveToFirst()) {
+                do {
+                    long time = cursor.getLong(0);
+                    long seed = cursor.getLong(1);
+                    int difficulty = cursor.getInt(2);
 
-                System.out.println("time = " + time);
-                System.out.println("difficulty = " + difficulty);
+                    list.add(new Favourite(time, difficulty, seed));
 
-                list.add(new Favourite(time, difficulty));
-
-            } while(cursor.moveToNext());
+                } while(cursor.moveToNext());
+            }
+            cursor.close();
         }
-        cursor.close();
         return list;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
+        System.out.println("FavouritesManager.onCreate");
     }
 
     @Override

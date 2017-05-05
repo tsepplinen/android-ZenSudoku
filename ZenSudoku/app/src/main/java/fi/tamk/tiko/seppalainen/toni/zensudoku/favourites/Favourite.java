@@ -8,9 +8,11 @@ import java.util.Date;
 class Favourite {
     public Date date;
     public String difficulty;
+    public long seed;
 
-    public Favourite(long time, int difficulty) {
+    public Favourite(long time, int difficulty, long seed) {
         this.date = new Date(time);
+        this.seed = seed;
         switch (difficulty) {
             case 30: this.difficulty = "Hard"; break;
             case 40: this.difficulty = "Medium"; break;

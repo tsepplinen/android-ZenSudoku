@@ -28,7 +28,6 @@
         android:text="@string/main_menu_play_easy_button_text"
         app:layout_constraintTop_toBottomOf="@id/continue_game_button"
         app:layout_constraintBottom_toTopOf="@+id/play_medium_button"
-        app:layout_constraintVertical_chainStyle="packed"
 
         app:layout_constraintLeft_toLeftOf="@+id/continue_game_button"
         android:onClick="handleButtonClick"
@@ -41,7 +40,6 @@
         android:text="@string/main_menu_play_medium_button_text"
         app:layout_constraintTop_toBottomOf="@+id/play_easy_button"
         app:layout_constraintBottom_toTopOf="@+id/play_hard_button"
-        app:layout_constraintVertical_chainStyle="packed"
 
         app:layout_constraintLeft_toLeftOf="@+id/play_easy_button"
         android:onClick="handleButtonClick"
@@ -53,11 +51,23 @@
         android:layout_height="wrap_content"
         android:text="@string/main_menu_play_hard_button_text"
         app:layout_constraintTop_toBottomOf="@+id/play_medium_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintBottom_toTopOf="@+id/favourites_button"
 
         app:layout_constraintLeft_toLeftOf="@+id/play_easy_button"
         android:onClick="handleButtonClick"
         />
+
+    <Button
+        android:id="@+id/favourites_button"
+        android:layout_width="@dimen/main_menu_button_width"
+        android:layout_height="wrap_content"
+        android:text="@string/main_menu_favourites_button_text"
+        app:layout_constraintTop_toBottomOf="@+id/play_hard_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintLeft_toLeftOf="@+id/play_easy_button"
+        android:onClick="handleButtonClick"
+        />
+
 
 </android.support.constraint.ConstraintLayout>

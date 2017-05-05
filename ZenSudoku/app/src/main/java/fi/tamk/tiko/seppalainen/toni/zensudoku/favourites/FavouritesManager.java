@@ -1,18 +1,18 @@
-package fi.tamk.tiko.seppalainen.toni.zensudoku;
+package fi.tamk.tiko.seppalainen.toni.zensudoku.favourites;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
-class FavouritesManager extends SQLiteOpenHelper {
+public class FavouritesManager extends SQLiteOpenHelper {
 
 
     private static final String TABLE_NAME = "favourites";
@@ -28,16 +28,41 @@ class FavouritesManager extends SQLiteOpenHelper {
 
     private SQLiteDatabase writer;
     private SQLiteDatabase reader;
+    private ArrayList<Favourite> favourites;
 
     public FavouritesManager(Context context) {
         super(context, "SUDOKU_DB", null, 1);
         writer = getWritableDatabase();
         reader = getReadableDatabase();
+        favourites = fetchFavourites();
+    }
+
+    private ArrayList<Favourite> fetchFavourites() {
+        ArrayList<Favourite> list = new ArrayList<>();
+
+        if (reader.isOpen()) {
+            String query = "SELECT * FROM " + TABLE_NAME;
+            Cursor cursor = reader.rawQuery(query, null);
+
+            if(cursor.moveToFirst()) {
+                do {
+                    long time = cursor.getLong(0);
+                    long seed = cursor.getLong(1);
+                    int difficulty = cursor.getInt(2);
+
+                    list.add(new Favourite(time, difficulty, seed));
+
+                } while(cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        return list;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
+        System.out.println("FavouritesManager.onCreate");
     }
 
     @Override
@@ -90,5 +115,26 @@ class FavouritesManager extends SQLiteOpenHelper {
 
         cursor.close();
         return found;
+    }
+
+    public Favourite get(int position) {
+        try {
+            return favourites.get(position);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
+    public int getCount() {
+        return favourites.size();
+    }
+
+    public boolean remove(Sudoku sudoku) {
+        long seed = sudoku.getSeed();
+        int difficulty = sudoku.getDifficulty();
+
+        String where = "seed = ? AND difficulty = ?";
+        String[] values = {""+seed, ""+difficulty};
+        return writer.delete(TABLE_NAME, where, values) > 0;
     }
 }

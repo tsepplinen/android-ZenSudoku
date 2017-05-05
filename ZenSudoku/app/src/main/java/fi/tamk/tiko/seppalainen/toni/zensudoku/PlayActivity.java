@@ -3,8 +3,6 @@ package fi.tamk.tiko.seppalainen.toni.zensudoku;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +12,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import fi.tamk.tiko.seppalainen.toni.zensudoku.favourites.FavouritesManager;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.HintData;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
@@ -41,6 +40,7 @@ public class PlayActivity extends AppCompatActivity {
         rootLayout = findViewById(R.id.play_root_layout);
 
         int difficulty = 50;
+        Long seed = null;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             Object dObj = extras.get("difficulty");
@@ -54,6 +54,7 @@ public class PlayActivity extends AppCompatActivity {
                 }
             }
             this.continueGame =  extras.getBoolean("continue");
+            seed = (Long) extras.get("seed");
         }
 
         cellSelectListener = new CellSelectListener(this);
@@ -63,6 +64,8 @@ public class PlayActivity extends AppCompatActivity {
         if (continueGame && saveManager.hasSavedGame()) {
             SaveManager.SavedSudokuGame loaded = saveManager.load();
             sudokuData = SudokuProvider.getSudoku(loaded);
+        } else if (seed != null) {
+            sudokuData = SudokuProvider.getSudoku(difficulty, seed);
         } else {
             sudokuData = SudokuProvider.getSudoku(difficulty);
         }
@@ -108,7 +111,6 @@ public class PlayActivity extends AppCompatActivity {
                 puzzleSolved();
             }
         }
-
     }
 
     private void puzzleSolved() {
@@ -140,18 +142,25 @@ public class PlayActivity extends AppCompatActivity {
                 useHint();
                 return true;
             case R.id.play_action_favourite:
-                favouritePuzzle();
-                item.setIcon(android.R.drawable.btn_star_big_on);
+                favouritePuzzle(item);
                 return true;
         }
         return false;
     }
 
-    private void favouritePuzzle() {
-        if (favouritesManager.add(sudokuData)) {
+    private void favouritePuzzle(MenuItem item) {
+        if (favouritesManager.has(sudokuData.getSeed(), sudokuData.getDifficulty())) {
+            favouritesManager.remove(sudokuData);
+            Snackbar snackbar = Snackbar
+                    .make(rootLayout, "Puzzle removed from favourites", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            item.setIcon(android.R.drawable.btn_star_big_off);
+        } else if (favouritesManager.add(sudokuData)) {
             Snackbar snackbar = Snackbar
                     .make(rootLayout, "Puzzle added to favourites", Snackbar.LENGTH_LONG);
             snackbar.show();
+            item.setIcon(android.R.drawable.btn_star_big_on);
+
         }
     }
 
@@ -161,7 +170,6 @@ public class PlayActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Errors found", Toast.LENGTH_LONG).show();
         }
-
     }
 
     private void useHint() {

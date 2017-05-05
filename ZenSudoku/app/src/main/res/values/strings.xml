@@ -7,4 +7,5 @@
     <string name="play_action_hint_text">Hint</string>
     <string name="play_action_check_text">Check puzzle</string>
     <string name="play_action_favourite_text">Add to favourites</string>
+    <string name="main_menu_favourites_button_text">favourites</string>
 </resources>

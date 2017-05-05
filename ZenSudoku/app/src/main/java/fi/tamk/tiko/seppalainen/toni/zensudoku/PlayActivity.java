@@ -40,6 +40,7 @@ public class PlayActivity extends AppCompatActivity {
         rootLayout = findViewById(R.id.play_root_layout);
 
         int difficulty = 50;
+        Long seed = null;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             Object dObj = extras.get("difficulty");
@@ -53,6 +54,7 @@ public class PlayActivity extends AppCompatActivity {
                 }
             }
             this.continueGame =  extras.getBoolean("continue");
+            seed = (Long) extras.get("seed");
         }
 
         cellSelectListener = new CellSelectListener(this);
@@ -62,6 +64,8 @@ public class PlayActivity extends AppCompatActivity {
         if (continueGame && saveManager.hasSavedGame()) {
             SaveManager.SavedSudokuGame loaded = saveManager.load();
             sudokuData = SudokuProvider.getSudoku(loaded);
+        } else if (seed != null) {
+            sudokuData = SudokuProvider.getSudoku(difficulty, seed);
         } else {
             sudokuData = SudokuProvider.getSudoku(difficulty);
         }
@@ -107,7 +111,6 @@ public class PlayActivity extends AppCompatActivity {
                 puzzleSolved();
             }
         }
-
     }
 
     private void puzzleSolved() {
@@ -160,7 +163,6 @@ public class PlayActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Errors found", Toast.LENGTH_LONG).show();
         }
-
     }
 
     private void useHint() {

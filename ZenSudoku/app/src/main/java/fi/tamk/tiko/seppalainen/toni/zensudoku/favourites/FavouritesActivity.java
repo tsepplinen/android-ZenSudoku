@@ -40,6 +40,7 @@ public class FavouritesActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PlayActivity.class);
         intent.putExtra("difficulty", favourite.difficulty);
         intent.putExtra("continue", false);
+        intent.putExtra("seed", favourite.seed);
         startActivity(intent);
     }
 }

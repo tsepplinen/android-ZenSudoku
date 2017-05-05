@@ -3,7 +3,6 @@ package fi.tamk.tiko.seppalainen.toni.zensudoku.favourites;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -35,6 +34,32 @@ public class FavouritesManager extends SQLiteOpenHelper {
         super(context, "SUDOKU_DB", null, 1);
         writer = getWritableDatabase();
         reader = getReadableDatabase();
+
+        favourites = fetchFavourites();
+    }
+
+    private ArrayList<Favourite> fetchFavourites() {
+
+        ArrayList<Favourite> list = new ArrayList<>();
+
+        String query = "SELECT * FROM ?";
+        String[] values = {TABLE_NAME};
+        Cursor cursor = reader.rawQuery(query, values);
+
+        if(cursor.moveToFirst()) {
+            do {
+                long time = cursor.getLong(0);
+                int difficulty = cursor.getInt(2);
+
+                System.out.println("time = " + time);
+                System.out.println("difficulty = " + difficulty);
+
+                list.add(new Favourite(time, difficulty));
+
+            } while(cursor.moveToNext());
+        }
+        cursor.close();
+        return list;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package fi.tamk.tiko.seppalainen.toni.zensudoku;
+package fi.tamk.tiko.seppalainen.toni.zensudoku.favourites;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,7 +12,7 @@ import java.util.Date;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
-class FavouritesManager extends SQLiteOpenHelper {
+public class FavouritesManager extends SQLiteOpenHelper {
 
 
     private static final String TABLE_NAME = "favourites";

@@ -3,8 +3,6 @@ package fi.tamk.tiko.seppalainen.toni.zensudoku;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +12,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import fi.tamk.tiko.seppalainen.toni.zensudoku.favourites.FavouritesManager;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.HintData;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 

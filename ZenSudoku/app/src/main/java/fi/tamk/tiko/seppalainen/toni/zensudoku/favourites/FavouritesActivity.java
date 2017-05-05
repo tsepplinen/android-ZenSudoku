@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import fi.tamk.tiko.seppalainen.toni.zensudoku.Difficulty;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.PlayActivity;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.R;
 
@@ -38,7 +39,10 @@ public class FavouritesActivity extends AppCompatActivity {
         Favourite favourite = favouritesManager.get(position);
 
         Intent intent = new Intent(this, PlayActivity.class);
-        intent.putExtra("difficulty", favourite.difficulty);
+
+        Difficulty difficulty = Difficulty.fromInt(favourite.difficulty);
+
+        intent.putExtra("difficulty", difficulty);
         intent.putExtra("continue", false);
         intent.putExtra("seed", favourite.seed);
         startActivity(intent);

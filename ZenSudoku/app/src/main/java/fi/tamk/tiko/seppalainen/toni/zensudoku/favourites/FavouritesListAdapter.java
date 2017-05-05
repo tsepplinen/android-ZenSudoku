@@ -1,22 +1,39 @@
 package fi.tamk.tiko.seppalainen.toni.zensudoku.favourites;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+
+import fi.tamk.tiko.seppalainen.toni.zensudoku.R;
 
 public class FavouritesListAdapter extends RecyclerView.Adapter<FavouritesListViewHolder>{
 
+    private final FavouritesManager favouritesManager;
+
+    public FavouritesListAdapter(Activity context) {
+        favouritesManager = new FavouritesManager(context);
+    }
+
     @Override
     public FavouritesListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View inflatedView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.favourite_list_item, parent, false);
+        return new FavouritesListViewHolder(inflatedView);
     }
 
     @Override
     public void onBindViewHolder(FavouritesListViewHolder holder, int position) {
-
+        Favourite favourite = favouritesManager.get(position);
+        if (favourite != null) {
+            holder.dateView.setText(favourite.date.toString());
+            holder.difficultyView.setText(favourite.difficulty);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return favouritesManager.getCount();
     }
 }

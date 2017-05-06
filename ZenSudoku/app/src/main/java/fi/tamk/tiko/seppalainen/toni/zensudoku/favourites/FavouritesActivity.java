@@ -34,6 +34,11 @@ public class FavouritesActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        favouritesManager.reloadData();
+    }
 
     public void selectFavourite(View view) {
 

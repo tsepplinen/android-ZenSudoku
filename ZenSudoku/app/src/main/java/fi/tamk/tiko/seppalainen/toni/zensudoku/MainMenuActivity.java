@@ -46,11 +46,26 @@ public class MainMenuActivity extends AppCompatActivity {
             Intent intent = new Intent(this, FavouritesActivity.class);
             startActivity(intent);
         } else {
-            Intent intent = new Intent(this, PlayActivity.class);
-            intent.putExtra("difficulty", difficulty);
-            intent.putExtra("continue", shouldContinue);
-            startActivity(intent);
+            if (shouldContinue) {
+                startGame(difficulty, shouldContinue);
+            } else {
+                SaveManager saveManager = new SaveManager(this);
+                if (saveManager.hasSavedGame()) {
+                    ConfirmNewGameDialogFragment dialog = ConfirmNewGameDialogFragment.newInstance(difficulty);
+                    dialog.show(getSupportFragmentManager(), "confirmNewGame");
+                } else {
+                    startGame(difficulty, false);
+                }
+            }
         }
 
+
+    }
+
+    public void startGame(Difficulty difficulty, boolean shouldContinue) {
+        Intent intent = new Intent(this, PlayActivity.class);
+        intent.putExtra("difficulty", difficulty);
+        intent.putExtra("continue", shouldContinue);
+        startActivity(intent);
     }
 }

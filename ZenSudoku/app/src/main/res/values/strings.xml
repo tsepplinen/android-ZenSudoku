@@ -8,4 +8,7 @@
     <string name="play_action_check_text">Check puzzle</string>
     <string name="play_action_favourite_text">Add to favourites</string>
     <string name="main_menu_favourites_button_text">favourites</string>
+    <string name="dialog_confirm_new_game">Are you sure you want to start a new game?</string>
+    <string name="dialog_confirm_new_game_confirm">new game</string>
+    <string name="cancel">cancel</string>
 </resources>

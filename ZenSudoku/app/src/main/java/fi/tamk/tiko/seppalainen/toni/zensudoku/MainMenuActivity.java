@@ -49,8 +49,13 @@ public class MainMenuActivity extends AppCompatActivity {
             if (shouldContinue) {
                 startGame(difficulty, shouldContinue);
             } else {
-                ConfirmNewGameDialogFragment dialog = ConfirmNewGameDialogFragment.newInstance(difficulty);
-                dialog.show(getSupportFragmentManager(), "confirmNewGame");
+                SaveManager saveManager = new SaveManager(this);
+                if (saveManager.hasSavedGame()) {
+                    ConfirmNewGameDialogFragment dialog = ConfirmNewGameDialogFragment.newInstance(difficulty);
+                    dialog.show(getSupportFragmentManager(), "confirmNewGame");
+                } else {
+                    startGame(difficulty, false);
+                }
             }
         }
 

@@ -11,6 +11,7 @@ import fi.tamk.tiko.seppalainen.toni.zensudoku.ConfirmNewGameDialogFragment;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.Difficulty;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.PlayActivity;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.R;
+import fi.tamk.tiko.seppalainen.toni.zensudoku.SaveManager;
 
 public class FavouritesActivity extends AppCompatActivity {
 
@@ -36,13 +37,23 @@ public class FavouritesActivity extends AppCompatActivity {
 
     public void selectFavourite(View view) {
 
+        SaveManager sm = new SaveManager(this);
         int position = recyclerView.getChildAdapterPosition(view);
         Favourite favourite = favouritesManager.get(position);
-
         Difficulty difficulty = Difficulty.fromInt(favourite.difficulty);
 
-        ConfirmNewGameDialogFragment dialog;
-        dialog = ConfirmNewGameDialogFragment.newInstance(difficulty, favourite.seed);
-        dialog.show(getSupportFragmentManager(), "confirmNewGame");
+        if (sm.hasSavedGame()) {
+            ConfirmNewGameDialogFragment dialog;
+            dialog = ConfirmNewGameDialogFragment.newInstance(difficulty, favourite.seed);
+            dialog.show(getSupportFragmentManager(), "confirmNewGame");
+        } else {
+            Intent intent = new Intent(this, PlayActivity.class);
+            intent.putExtra("difficulty", difficulty);
+            intent.putExtra("seed", favourite.seed);
+            intent.putExtra("continue", false);
+            startActivity(intent);
+        }
+
+
     }
 }

@@ -54,7 +54,9 @@ public class PlayActivity extends AppCompatActivity {
                 }
             }
             this.continueGame =  extras.getBoolean("continue");
-            seed = (Long) extras.get("seed");
+            if (extras.containsKey("seed")) {
+                seed = extras.getLong("seed");
+            }
         }
 
         cellSelectListener = new CellSelectListener(this);

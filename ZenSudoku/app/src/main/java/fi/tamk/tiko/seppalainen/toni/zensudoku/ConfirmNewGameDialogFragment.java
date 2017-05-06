@@ -16,12 +16,29 @@ public class ConfirmNewGameDialogFragment extends DialogFragment {
      * Creates an instance of dialog fragment.
      *
      * @param difficulty Chosen game difficulty.
-     * @return created instance.
+     * @return Created instance.
      */
     public static ConfirmNewGameDialogFragment newInstance(Difficulty difficulty) {
         ConfirmNewGameDialogFragment fragment = new ConfirmNewGameDialogFragment();
         Bundle args = new Bundle();
         args.putSerializable("difficulty", difficulty);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    /**
+     * Creates an instance of dialog fragment.
+     *
+     * @param difficulty Chosen game difficulty.
+     * @param seed Seed to generate the sudoku with.
+     * @return Created instance.
+     */
+    public static ConfirmNewGameDialogFragment newInstance(Difficulty difficulty, long seed) {
+        ConfirmNewGameDialogFragment fragment = new ConfirmNewGameDialogFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("difficulty", difficulty);
+        args.putLong("seed", seed);
         fragment.setArguments(args);
         return fragment;
     }
@@ -32,15 +49,22 @@ public class ConfirmNewGameDialogFragment extends DialogFragment {
         builder.setMessage(R.string.dialog_confirm_new_game)
                 .setPositiveButton(R.string.dialog_confirm_new_game_confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Difficulty diff = null;
-                        final Bundle args = getArguments();
-                        if (args != null) {
-                            diff = (Difficulty) args.getSerializable("difficulty");
-                        }
 
                         Intent intent = new Intent(getContext(), PlayActivity.class);
-                        intent.putExtra("difficulty", diff);
                         intent.putExtra("continue", false);
+
+                        final Bundle args = getArguments();
+                        if (args != null) {
+                            if (args.containsKey("difficulty")) {
+                                Difficulty diff = (Difficulty) args.getSerializable("difficulty");
+                                intent.putExtra("difficulty", diff);
+                            }
+                            if (args.containsKey("seed")) {
+                                long seed = args.getLong("seed");
+                                intent.putExtra("seed", seed);
+                            }
+                        }
+
                         startActivity(intent);
 
                     }
@@ -51,6 +75,8 @@ public class ConfirmNewGameDialogFragment extends DialogFragment {
                 });
         return builder.create();
     }
+
+
 }
 
 

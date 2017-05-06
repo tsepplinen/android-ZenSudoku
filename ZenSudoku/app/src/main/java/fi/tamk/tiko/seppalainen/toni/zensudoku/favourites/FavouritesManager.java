@@ -137,4 +137,8 @@ public class FavouritesManager extends SQLiteOpenHelper {
         String[] values = {""+seed, ""+difficulty};
         return writer.delete(TABLE_NAME, where, values) > 0;
     }
+
+    public void reloadData() {
+        favourites = fetchFavourites();
+    }
 }

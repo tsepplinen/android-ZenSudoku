@@ -3,7 +3,7 @@ package fi.tamk.tiko.seppalainen.toni.zensudoku.favourites;
 import android.app.Activity;
 
 /**
- * Provides access to single instance of FavouritesManager.
+ * Provides access to single instance of {@link FavouritesManager}.
  */
 public class FavouritesManagerProvider {
     private static FavouritesManager favouritesManager;

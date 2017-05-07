@@ -154,6 +154,10 @@ public class SaveManager {
         return array;
     }
 
+    public void deleteSave() {
+        context.getBaseContext().deleteFile(SAVE_FILENAME);
+    }
+
     public class SavedSudokuGame {
 
         public long seed;

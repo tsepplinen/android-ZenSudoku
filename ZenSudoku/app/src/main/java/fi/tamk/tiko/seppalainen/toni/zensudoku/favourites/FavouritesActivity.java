@@ -12,6 +12,7 @@ import fi.tamk.tiko.seppalainen.toni.zensudoku.Difficulty;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.PlayActivity;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.R;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.SaveManager;
+import fi.tamk.tiko.seppalainen.toni.zensudoku.SaveManagerProvider;
 
 public class FavouritesActivity extends AppCompatActivity {
 
@@ -42,7 +43,7 @@ public class FavouritesActivity extends AppCompatActivity {
 
     public void selectFavourite(View view) {
 
-        SaveManager sm = new SaveManager(this);
+        SaveManager sm = SaveManagerProvider.getSaveManager();
         int position = recyclerView.getChildAdapterPosition(view);
         Favourite favourite = favouritesManager.get(position);
         Difficulty difficulty = Difficulty.fromInt(favourite.difficulty);

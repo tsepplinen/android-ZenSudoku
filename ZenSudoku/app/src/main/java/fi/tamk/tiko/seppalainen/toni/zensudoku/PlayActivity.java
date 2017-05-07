@@ -1,5 +1,6 @@
 package fi.tamk.tiko.seppalainen.toni.zensudoku;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,13 +48,20 @@ public class PlayActivity extends AppCompatActivity {
             if (dObj instanceof Difficulty) {
                 Difficulty d = (Difficulty) extras.get("difficulty");
                 switch (d) {
-                    case EASY: difficulty = 50; break;
-                    case MEDIUM: difficulty = 40; break;
-                    case HARD: difficulty = 30; break;
-                    default: difficulty = 50;
+                    case EASY:
+                        difficulty = 50;
+                        break;
+                    case MEDIUM:
+                        difficulty = 40;
+                        break;
+                    case HARD:
+                        difficulty = 30;
+                        break;
+                    default:
+                        difficulty = 50;
                 }
             }
-            this.continueGame =  extras.getBoolean("continue");
+            this.continueGame = extras.getBoolean("continue");
             if (extras.containsKey("seed")) {
                 seed = extras.getLong("seed");
             }
@@ -62,7 +70,7 @@ public class PlayActivity extends AppCompatActivity {
         cellSelectListener = new CellSelectListener(this);
         numberSelectListener = new NumberSelectListener(this);
 
-        SaveManager saveManager = new SaveManager(this);
+        SaveManager saveManager = SaveManagerProvider.getSaveManager();
         if (continueGame && saveManager.hasSavedGame()) {
             SaveManager.SavedSudokuGame loaded = saveManager.load();
             sudokuData = SudokuProvider.getSudoku(loaded);
@@ -92,7 +100,7 @@ public class PlayActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        SaveManager saveManager = new SaveManager(this);
+        SaveManager saveManager = SaveManagerProvider.getSaveManager();
         saveManager.save(sudokuData);
         super.onBackPressed();
     }
@@ -116,9 +124,15 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     private void puzzleSolved() {
-        Snackbar snackbar = Snackbar
-                .make(rootLayout, "Congratulations, you have finished the sudoku!", Snackbar.LENGTH_LONG);
-        snackbar.show();
+
+        Intent intent = new Intent(this, WinActivity.class);
+        startActivity(intent);
+
+
+//
+//        Snackbar snackbar = Snackbar
+//                .make(rootLayout, "Congratulations, you have finished the sudoku!", Snackbar.LENGTH_LONG);
+//        snackbar.show();
     }
 
 
@@ -130,7 +144,6 @@ public class PlayActivity extends AppCompatActivity {
         initFavouriteButton();
         return true;
     }
-
 
 
     @Override
@@ -185,7 +198,7 @@ public class PlayActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        SaveManager saveManager = new SaveManager(this);
+        SaveManager saveManager = SaveManagerProvider.getSaveManager();
         saveManager.save(sudokuData);
         super.onDestroy();
         favouritesManager.close();

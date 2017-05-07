@@ -11,4 +11,5 @@
     <string name="dialog_confirm_new_game">Are you sure you want to start a new game?</string>
     <string name="dialog_confirm_new_game_confirm">new game</string>
     <string name="cancel">cancel</string>
+    <string name="win_message_text">Puzzle Complete!</string>
 </resources>

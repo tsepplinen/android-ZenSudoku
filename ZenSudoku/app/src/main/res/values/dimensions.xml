@@ -5,4 +5,5 @@
         >200dp</dimen>
     <dimen name="cell_border_thick">1.5dp</dimen>
     <dimen name="cell_border">0.5dp</dimen>
+    <dimen name="win_message_size">35sp</dimen>
 </resources>

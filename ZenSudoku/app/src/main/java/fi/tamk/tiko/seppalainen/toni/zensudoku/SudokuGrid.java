@@ -18,7 +18,7 @@ public class SudokuGrid {
     private ArrayList<SudokuCellGroup> rows;
     private ArrayList<SudokuCellGroup> columns;
     private ArrayList<SudokuCellGroup> squares;
-    private SudokuCell selectedCell;
+    private SudokuGridCell selectedCell;
     private NumberGroupManager numberGroupManager;
     private Sudoku sudokuData;
 
@@ -44,9 +44,10 @@ public class SudokuGrid {
             sudokuContainer.addView(tableRow);
 
             for (int x = 0; x < 9; x++) {
-                final SudokuCell cell = new SudokuCell(parent, x, y);
+                final SudokuGridCell cell = new SudokuGridCell(parent, x, y);
                 cell.setOnClickListener(cellSelectListener);
-                cell.setInitialValue(sudokuData.get(x, y));
+                cell.setInitialValue(sudokuData.getInitial(x, y));
+                cell.setValue(sudokuData.get(x,y));
                 numberGroupManager.add(cell);
                 index++;
 
@@ -62,7 +63,7 @@ public class SudokuGrid {
         }
     }
 
-    private void addToGroups(SudokuCell cell) {
+    private void addToGroups(SudokuGridCell cell) {
         int x = cell.getCellX();
         int y = cell.getCellY();
 
@@ -100,11 +101,11 @@ public class SudokuGrid {
     }
 
     public void selectCell(int x, int y) {
-        SudokuCell cell = rows.get(y).getCells().get(x);
+        SudokuGridCell cell = rows.get(y).getCells().get(x);
         selectCell(cell);
     }
 
-    public void selectCell(SudokuCell cell) {
+    public void selectCell(SudokuGridCell cell) {
         if (selectedCell != null) {
             selectedCell.setSelect(false);
 
@@ -136,7 +137,7 @@ public class SudokuGrid {
 
     public void refresh() {
         for (int y = 0; y < rows.size(); y++) {
-            List<SudokuCell> row = rows.get(y).getCells();
+            List<SudokuGridCell> row = rows.get(y).getCells();
             int rowSize = row.size();
             for (int x = 0; x < rowSize; x++) {
                 int num = sudokuData.get(x, y);

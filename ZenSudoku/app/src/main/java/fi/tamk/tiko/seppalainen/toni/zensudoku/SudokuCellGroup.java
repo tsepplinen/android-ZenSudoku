@@ -8,33 +8,33 @@ import java.util.List;
  */
 
 class SudokuCellGroup {
-    private List<SudokuCell> cells;
+    private List<SudokuGridCell> cells;
 
     public SudokuCellGroup() {
         cells = new ArrayList<>();
     }
 
-    public List<SudokuCell> getCells() {
+    public List<SudokuGridCell> getCells() {
         return cells;
     }
 
-    public void addCell(SudokuCell cell) {
+    public void addCell(SudokuGridCell cell) {
         cells.add(cell);
     }
 
     public void setHighlight(boolean shouldHighlight) {
-        for (SudokuCell cell : cells) {
+        for (SudokuGridCell cell : cells) {
             cell.setHighlight(shouldHighlight);
         }
     }
 
     public void setNumberHighlight(boolean shouldHighlight) {
-        for (SudokuCell cell : cells) {
+        for (SudokuGridCell cell : cells) {
             cell.setNumberHighlight(shouldHighlight);
         }
     }
 
-    public void removeCell(SudokuCell cell) {
+    public void removeCell(SudokuGridCell cell) {
         cells.remove(cell);
     }
 }

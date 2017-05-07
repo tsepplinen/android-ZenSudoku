@@ -9,7 +9,7 @@ import android.view.Gravity;
 /**
  * Represents a cell in a sudoku grid.
  */
-public class SudokuCell extends android.support.v7.widget.AppCompatTextView {
+public class SudokuGridCell extends android.support.v7.widget.AppCompatTextView {
 
     private final int TEXT_SIZE = 30;
     private int cellX = 0;
@@ -26,7 +26,7 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView {
     private int defaultHighlight;
     private int defaultNumberHighlight;
 
-    public SudokuCell(Activity parent, int x, int y) {
+    public SudokuGridCell(Activity parent, int x, int y) {
         super(parent);
         cellX = x;
         cellY = y;
@@ -70,19 +70,16 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView {
     }
 
     public void setInitialValue(int initialValue) {
+        this.value = initialValue;
         if (initialValue != 0) {
             if (!isInitial) {
                 this.isInitial = true;
                 setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
             }
-            this.value = initialValue;
-            if (initialValue != 0) {
-                setText("" + initialValue);
-            } else {
-                setText("");
-            }
+            setText("" + initialValue);
+        } else {
+            setText("");
         }
-
     }
 
     public int getCellX() {

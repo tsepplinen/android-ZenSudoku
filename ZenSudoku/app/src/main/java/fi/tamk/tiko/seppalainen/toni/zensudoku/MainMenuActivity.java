@@ -15,13 +15,16 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         FavouritesManagerProvider.init(this);
+        SaveManagerProvider.init(this);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        SaveManager saveManager = new SaveManager(this);
-        if (!saveManager.hasSavedGame()) {
+    protected void onStart() {
+        super.onStart();
+        SaveManager saveManager = SaveManagerProvider.getSaveManager();
+        if (saveManager.hasSavedGame()) {
+            findViewById(R.id.continue_game_button).setEnabled(true);
+        } else {
             findViewById(R.id.continue_game_button).setEnabled(false);
         }
     }
@@ -49,7 +52,7 @@ public class MainMenuActivity extends AppCompatActivity {
             if (shouldContinue) {
                 startGame(difficulty, shouldContinue);
             } else {
-                SaveManager saveManager = new SaveManager(this);
+                SaveManager saveManager = SaveManagerProvider.getSaveManager();
                 if (saveManager.hasSavedGame()) {
                     ConfirmNewGameDialogFragment dialog = ConfirmNewGameDialogFragment.newInstance(difficulty);
                     dialog.show(getSupportFragmentManager(), "confirmNewGame");

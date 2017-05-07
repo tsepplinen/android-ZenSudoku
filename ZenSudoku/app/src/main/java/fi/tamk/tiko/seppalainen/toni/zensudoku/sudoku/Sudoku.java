@@ -229,15 +229,17 @@ public class Sudoku {
         columns.get(x).add(num);
         squares.get(getSquareIndex(x, y)).add(num);
 
-        if (num == 0) {
-            filledCells--;
-        } else if (old == 0){
+        if (old == 0 && num != 0){
             filledCells++;
         }
     }
 
     public int get(int x, int y) {
         return data.get(y * 9 + x).getNum();
+    }
+
+    public int getInitial(int x, int y) {
+        return initialData.get(y * 9 + x).getNum();
     }
 
     public boolean isEmpty(int x, int y) {
@@ -250,6 +252,7 @@ public class Sudoku {
         columns.get(x).remove(num);
         squares.get(getSquareIndex(x, y)).remove(num);
         place(0, x, y);
+        filledCells--;
     }
 
     private void remove(SudokuCell cell) {

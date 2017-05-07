@@ -52,14 +52,14 @@ class NumberGroupManager {
         currentHighlight = 0;
     }
 
-    public void add(SudokuCell cell) {
+    public void add(SudokuGridCell cell) {
         SudokuCellGroup group = numberGroups.get(cell.getValue());
         if (group != null) {
             group.addCell(cell);
         }
     }
 
-    public void remove(SudokuCell cell) {
+    public void remove(SudokuGridCell cell) {
         SudokuCellGroup group = numberGroups.get(cell.getValue());
         if (group != null) {
             group.removeCell(cell);

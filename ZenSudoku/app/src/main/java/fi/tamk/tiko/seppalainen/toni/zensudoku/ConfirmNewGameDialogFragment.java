@@ -64,7 +64,7 @@ public class ConfirmNewGameDialogFragment extends DialogFragment {
                                 intent.putExtra("seed", seed);
                             }
                         }
-
+                        dismiss();
                         startActivity(intent);
 
                     }

@@ -70,19 +70,16 @@ public class SudokuCell extends android.support.v7.widget.AppCompatTextView {
     }
 
     public void setInitialValue(int initialValue) {
+        this.value = initialValue;
         if (initialValue != 0) {
             if (!isInitial) {
                 this.isInitial = true;
                 setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
             }
-            this.value = initialValue;
-            if (initialValue != 0) {
-                setText("" + initialValue);
-            } else {
-                setText("");
-            }
+            setText("" + initialValue);
+        } else {
+            setText("");
         }
-
     }
 
     public int getCellX() {

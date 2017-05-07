@@ -238,6 +238,10 @@ public class Sudoku {
         return data.get(y * 9 + x).getNum();
     }
 
+    public int getInitial(int x, int y) {
+        return initialData.get(y * 9 + x).getNum();
+    }
+
     public boolean isEmpty(int x, int y) {
         return get(x, y) == 0;
     }

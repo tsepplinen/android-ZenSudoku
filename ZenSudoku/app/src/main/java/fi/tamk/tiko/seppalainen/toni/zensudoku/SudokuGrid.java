@@ -46,7 +46,8 @@ public class SudokuGrid {
             for (int x = 0; x < 9; x++) {
                 final SudokuCell cell = new SudokuCell(parent, x, y);
                 cell.setOnClickListener(cellSelectListener);
-                cell.setInitialValue(sudokuData.get(x, y));
+                cell.setInitialValue(sudokuData.getInitial(x, y));
+                cell.setValue(sudokuData.get(x,y));
                 numberGroupManager.add(cell);
                 index++;
 

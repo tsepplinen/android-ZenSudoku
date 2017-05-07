@@ -106,7 +106,7 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void selectCell(View v) {
-        sudokuGrid.selectCell((SudokuCell) v);
+        sudokuGrid.selectCell((SudokuGridCell) v);
     }
 
 

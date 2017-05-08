@@ -27,7 +27,9 @@ public class MainMenuActivity extends AppCompatActivity {
         } else {
             findViewById(R.id.continue_game_button).setEnabled(false);
         }
+        SudokuProvider.preload();
     }
+
 
     public void handleButtonClick(View view) {
         Difficulty difficulty = Difficulty.EASY;

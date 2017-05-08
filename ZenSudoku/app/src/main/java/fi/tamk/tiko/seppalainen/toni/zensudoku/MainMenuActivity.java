@@ -17,7 +17,7 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         DatabaseProvider.init(this);
         FavouritesManagerProvider.init(this);
-        SaveManagerProvider.init(this);
+        SaveManagerProvider.init();
     }
 
     @Override

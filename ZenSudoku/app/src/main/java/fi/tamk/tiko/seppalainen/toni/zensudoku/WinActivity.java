@@ -11,17 +11,9 @@ public class WinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_win);
 
-
         SaveManager sm = SaveManagerProvider.getSaveManager();
         if (sm.hasSavedGame()) {
             sm.deleteSave();
-            System.out.println("WinActivity.onCreate deleting file...");
-        }
-
-        if (sm.hasSavedGame()) {
-            System.out.println("WinActivity.onCreate File was not deleted");
-        } else {
-            System.out.println("WinActivity.onCreate File was successfully deleted");
         }
     }
 }

@@ -10,18 +10,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.Date;
 
-import fi.tamk.tiko.seppalainen.toni.zensudoku.storage.DatabaseConnection;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.storage.DatabaseProvider;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
-public class FavouritesManager extends SQLiteOpenHelper {
+public class FavouritesManager {
 
-    public static final String TABLE_NAME = "favourites";
+    public static final String TABLE_FAVOURITES = "favourites";
     public static final String COL_NAME_TIME = "time";
     public static final String COL_NAME_SEED = "seed";
     public static final String COL_NAME_DIFFICULTY = "difficulty";
     public static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + TABLE_NAME + " ("
+            "CREATE TABLE " + TABLE_FAVOURITES + " ("
                     + COL_NAME_TIME + " INTEGER NOT NULL,"
                     + COL_NAME_SEED + " INTEGER NOT NULL,"
                     + COL_NAME_DIFFICULTY + " INTEGER NOT NULL,"
@@ -31,8 +30,7 @@ public class FavouritesManager extends SQLiteOpenHelper {
     private SQLiteDatabase reader;
     private ArrayList<Favourite> favourites;
 
-    public FavouritesManager(Context context) {
-        super(context, "SUDOKU_DB", null, 1);
+    public FavouritesManager() {
         writer = DatabaseProvider.getWriter();
         reader = DatabaseProvider.getReader();
         favourites = fetchFavourites();
@@ -42,7 +40,7 @@ public class FavouritesManager extends SQLiteOpenHelper {
         ArrayList<Favourite> list = new ArrayList<>();
 
         if (reader.isOpen()) {
-            String query = "SELECT * FROM " + TABLE_NAME;
+            String query = "SELECT * FROM " + TABLE_FAVOURITES;
             Cursor cursor = reader.rawQuery(query, null);
 
             if(cursor.moveToFirst()) {
@@ -60,17 +58,6 @@ public class FavouritesManager extends SQLiteOpenHelper {
         return list;
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
-        System.out.println("FavouritesManager.onCreate");
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-    }
-
     public boolean add(Sudoku sudoku) {
         long seed = sudoku.getSeed();
         int difficulty = sudoku.getDifficulty();
@@ -83,7 +70,7 @@ public class FavouritesManager extends SQLiteOpenHelper {
 
         long newRowId = 0;
         try {
-            newRowId = writer.insertOrThrow(TABLE_NAME, null, values);
+            newRowId = writer.insertOrThrow(TABLE_FAVOURITES, null, values);
         } catch (SQLException e) {
             return false;
         }
@@ -102,7 +89,7 @@ public class FavouritesManager extends SQLiteOpenHelper {
     }
 
     public boolean has(long seed, int difficulty) {
-        String query = "SELECT * FROM " + TABLE_NAME
+        String query = "SELECT * FROM " + TABLE_FAVOURITES
                 + " WHERE " + COL_NAME_SEED + " =?"
                 + " AND " + COL_NAME_DIFFICULTY + "=?"
                 + " LIMIT 1";
@@ -136,7 +123,7 @@ public class FavouritesManager extends SQLiteOpenHelper {
 
         String where = "seed = ? AND difficulty = ?";
         String[] values = {""+seed, ""+difficulty};
-        return writer.delete(TABLE_NAME, where, values) > 0;
+        return writer.delete(TABLE_FAVOURITES, where, values) > 0;
     }
 
     public void reloadData() {

@@ -50,9 +50,12 @@ public class SudokuProvider {
     }
 
     /**
-     * Checks from DB which puzzles are available.
+     * Checks from SaveManager which puzzles are available.
      */
     private static void checkStatus() {
-        //TODO initialize values for availability
+        SaveManager saveManager = SaveManagerProvider.getSaveManager();
+        easyAvailable.set(saveManager.has(Difficulty.EASY.toString()));
+        mediumAvailable.set(saveManager.has(Difficulty.MEDIUM.toString()));
+        hardAvailable.set(saveManager.has(Difficulty.HARD.toString()));
     }
 }

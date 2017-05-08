@@ -10,8 +10,8 @@ public class SaveManagerProvider {
     private static SaveManager saveManager;
 
 
-    public static void init(Activity context) {
-        saveManager = new SaveManager(context);
+    public static void init() {
+        saveManager = new SaveManager();
     }
 
     public static SaveManager getSaveManager() {

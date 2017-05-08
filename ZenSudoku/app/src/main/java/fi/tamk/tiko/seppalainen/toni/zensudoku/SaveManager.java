@@ -1,29 +1,26 @@
 package fi.tamk.tiko.seppalainen.toni.zensudoku;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import fi.tamk.tiko.seppalainen.toni.zensudoku.storage.DatabaseProvider;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.SudokuCell;
 
 public class SaveManager {
 
     public static final String TABLE_SAVES = "SAVES";
+    public static final String SAVES_ID = "id";
     public static final String SAVES_INITIAL = "initial";
     public static final String SAVES_RESULT = "result";
     public static final String SAVES_DATA = "data";
@@ -31,85 +28,51 @@ public class SaveManager {
     public static final String SAVES_DIFFICULTY = "difficulty";
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_SAVES + " ("
-                    + SAVES_INITIAL + " INTEGER NOT NULL,"
-                    + SAVES_RESULT + " INTEGER NOT NULL,"
-                    + SAVES_DATA + " INTEGER NOT NULL,"
+                    + SAVES_ID + " TEXT NOT NULL,"
+                    + SAVES_INITIAL + " TEXT NOT NULL,"
+                    + SAVES_RESULT + " TEXT NOT NULL,"
+                    + SAVES_DATA + " TEXT NOT NULL,"
                     + SAVES_SEED + " INTEGER NOT NULL,"
                     + SAVES_DIFFICULTY + " INTEGER NOT NULL,"
-                    + "PRIMARY KEY ( " + SAVES_SEED + ", " + SAVES_DIFFICULTY + " ))";
-
-    private static final String SAVE_FILENAME = "savedGame.json";
-    private Activity context;
-
-    public SaveManager(Activity context) {
-        this.context = context;
-    }
+                    + "PRIMARY KEY ( " + SAVES_ID + " ))";
 
     public boolean hasSavedGame() {
-        File file = context.getBaseContext().getFileStreamPath(SAVE_FILENAME);
-        return file.exists();
+        return has("SAVE");
     }
 
     public SavedSudokuGame load() {
-        FileInputStream fis = null;
-        InputStreamReader isr = null;
-        BufferedReader reader = null;
-        StringBuilder json = null;
-        try {
-            fis = context.openFileInput(SAVE_FILENAME);
-            isr = new InputStreamReader(fis, Charset.defaultCharset());
-            reader = new BufferedReader(isr);
-            String line = reader.readLine();
-            json = new StringBuilder();
-            while (line != null) {
-                json.append(line);
-                line = reader.readLine();
+
+        SQLiteDatabase reader = DatabaseProvider.getReader();
+
+        if (reader.isOpen()) {
+            String query = "SELECT * FROM " + TABLE_SAVES
+                    + " WHERE " + SAVES_ID + " =?"
+                    + " LIMIT 1";
+            String[] values = {"SAVE"};
+            Cursor cursor = reader.rawQuery(query, values);
+
+            if(cursor.moveToFirst()) {
+                String initial = cursor.getString(1);
+                String result = cursor.getString(2);
+                String data = cursor.getString(3);
+                long seed = cursor.getLong(4);
+                int difficulty = cursor.getInt(5);
+
+                SavedSudokuGame save = new SavedSudokuGame();
+                try {
+                    save.initial = getCells(new JSONArray(initial));
+                    save.result = getCells(new JSONArray(result));
+                    save.data = getCells(new JSONArray(data));
+                    save.seed = seed;
+                    save.difficulty = difficulty;
+                    cursor.close();
+                    return save;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fis != null) {
-                    fis.close();
-                }
-                if (isr != null) {
-                    isr.close();
-                }
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            cursor.close();
         }
-
-        if (json == null) {
-            return null;
-        }
-
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(json.toString());
-            SavedSudokuGame save = new SavedSudokuGame();
-            save.seed = jsonObject.getLong("seed");
-            save.difficulty = jsonObject.getInt("difficulty");
-
-            JSONArray initial = jsonObject.getJSONArray("initial");
-            JSONArray result = jsonObject.getJSONArray("result");
-            JSONArray data = jsonObject.getJSONArray("data");
-
-            save.initial = getCells(initial);
-            save.result = getCells(result);
-            save.data = getCells(data);
-
-            return save;
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         return null;
     }
 
@@ -134,28 +97,37 @@ public class SaveManager {
         return list;
     }
 
-    public void save(Sudoku sudoku) {
+    public boolean save(Sudoku sudoku, String id) {
+        System.out.println("SaveManager.save");
+        SQLiteDatabase writer = DatabaseProvider.getWriter();
+
+        ContentValues values = new ContentValues();
+        values.put(SAVES_ID, id);
+        values.put(SAVES_SEED, sudoku.getSeed());
+        values.put(SAVES_DIFFICULTY, sudoku.getDifficulty());
+
+        JSONArray initial = null;
+        JSONArray result = null;
+        JSONArray data = null;
         try {
-            FileOutputStream fos = context.openFileOutput(SAVE_FILENAME, Context.MODE_PRIVATE);
-            JSONObject jsonObject = new JSONObject();
-
-            jsonObject.put("seed", sudoku.getSeed());
-            jsonObject.put("difficulty", sudoku.getDifficulty());
-
-            jsonObject.put("initial",createJsonArray(sudoku.getInitialData()));
-            jsonObject.put("result",createJsonArray(sudoku.getResultData()));
-            jsonObject.put("data",createJsonArray(sudoku.getData()));
-
-
-            fos.write(jsonObject.toString().getBytes());
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            initial = createJsonArray(sudoku.getInitialData());
+            result = createJsonArray(sudoku.getResultData());
+            data = createJsonArray(sudoku.getData());
         } catch (JSONException e) {
             e.printStackTrace();
+            return false;
         }
+
+        values.put(SAVES_INITIAL, initial.toString());
+        values.put(SAVES_RESULT, result.toString());
+        values.put(SAVES_DATA, data.toString());
+
+        try {
+           writer.replaceOrThrow(TABLE_SAVES, null, values);
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
     }
 
     private JSONArray createJsonArray(List<SudokuCell> list) throws JSONException {
@@ -171,7 +143,36 @@ public class SaveManager {
     }
 
     public void deleteSave() {
-        context.getBaseContext().deleteFile(SAVE_FILENAME);
+        SQLiteDatabase writer = DatabaseProvider.getWriter();
+
+        String where = SAVES_ID + "=?";
+        String[] whereArgs = {"SAVE"};
+
+        int affectedRows = writer.delete(TABLE_SAVES, where, whereArgs);
+        System.out.println("affected = " + affectedRows);
+    }
+
+    /**
+     * Checks if a puzzle is available in store.
+     *
+     * @param id String id which kind of puzzle to check.
+     * @return True if puzzle is available, false otherwise.
+     */
+    public boolean has(String id) {
+        SQLiteDatabase reader = DatabaseProvider.getReader();
+
+        String query = "SELECT * FROM " + TABLE_SAVES
+                + " WHERE " + SAVES_ID + " =?"
+                + " LIMIT 1";
+        String[] values = {""+id};
+
+        boolean found = false;
+        Cursor cursor = reader.rawQuery(query, values);
+        if (cursor.getCount() > 0) {
+            found = true;
+        }
+        cursor.close();
+        return found;
     }
 
     public class SavedSudokuGame {

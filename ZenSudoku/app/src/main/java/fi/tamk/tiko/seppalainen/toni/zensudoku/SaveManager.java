@@ -22,6 +22,22 @@ import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.SudokuCell;
 
 public class SaveManager {
+
+    public static final String TABLE_SAVES = "SAVES";
+    public static final String SAVES_INITIAL = "initial";
+    public static final String SAVES_RESULT = "result";
+    public static final String SAVES_DATA = "data";
+    public static final String SAVES_SEED = "seed";
+    public static final String SAVES_DIFFICULTY = "difficulty";
+    public static final String SQL_CREATE_ENTRIES =
+            "CREATE TABLE " + TABLE_SAVES + " ("
+                    + SAVES_INITIAL + " INTEGER NOT NULL,"
+                    + SAVES_RESULT + " INTEGER NOT NULL,"
+                    + SAVES_DATA + " INTEGER NOT NULL,"
+                    + SAVES_SEED + " INTEGER NOT NULL,"
+                    + SAVES_DIFFICULTY + " INTEGER NOT NULL,"
+                    + "PRIMARY KEY ( " + SAVES_SEED + ", " + SAVES_DIFFICULTY + " ))";
+
     private static final String SAVE_FILENAME = "savedGame.json";
     private Activity context;
 

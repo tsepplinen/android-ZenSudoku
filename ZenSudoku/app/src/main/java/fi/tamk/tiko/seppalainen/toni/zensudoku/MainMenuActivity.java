@@ -7,6 +7,7 @@ import android.view.View;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.favourites.FavouritesActivity;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.favourites.FavouritesManagerProvider;
+import fi.tamk.tiko.seppalainen.toni.zensudoku.storage.DatabaseProvider;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -14,6 +15,7 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+        DatabaseProvider.init(this);
         FavouritesManagerProvider.init(this);
         SaveManagerProvider.init(this);
     }

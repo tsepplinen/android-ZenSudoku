@@ -10,16 +10,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.Date;
 
+import fi.tamk.tiko.seppalainen.toni.zensudoku.storage.DatabaseConnection;
+import fi.tamk.tiko.seppalainen.toni.zensudoku.storage.DatabaseProvider;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
 public class FavouritesManager extends SQLiteOpenHelper {
 
-
-    private static final String TABLE_NAME = "favourites";
-    private static final String COL_NAME_TIME = "time";
-    private static final String COL_NAME_SEED = "seed";
-    private static final String COL_NAME_DIFFICULTY = "difficulty";
-    private static final String SQL_CREATE_ENTRIES =
+    public static final String TABLE_NAME = "favourites";
+    public static final String COL_NAME_TIME = "time";
+    public static final String COL_NAME_SEED = "seed";
+    public static final String COL_NAME_DIFFICULTY = "difficulty";
+    public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " ("
                     + COL_NAME_TIME + " INTEGER NOT NULL,"
                     + COL_NAME_SEED + " INTEGER NOT NULL,"
@@ -32,8 +33,8 @@ public class FavouritesManager extends SQLiteOpenHelper {
 
     public FavouritesManager(Context context) {
         super(context, "SUDOKU_DB", null, 1);
-        writer = getWritableDatabase();
-        reader = getReadableDatabase();
+        writer = DatabaseProvider.getWriter();
+        reader = DatabaseProvider.getReader();
         favourites = fetchFavourites();
     }
 

@@ -40,7 +40,7 @@ public class SaveManager {
         return has("SAVE");
     }
 
-    public SavedSudokuGame load() {
+    public SavedSudokuGame load(String id) {
 
         SQLiteDatabase reader = DatabaseProvider.getReader();
 
@@ -48,7 +48,7 @@ public class SaveManager {
             String query = "SELECT * FROM " + TABLE_SAVES
                     + " WHERE " + SAVES_ID + " =?"
                     + " LIMIT 1";
-            String[] values = {"SAVE"};
+            String[] values = {id};
             Cursor cursor = reader.rawQuery(query, values);
 
             if(cursor.moveToFirst()) {
@@ -143,10 +143,15 @@ public class SaveManager {
     }
 
     public void deleteSave() {
+        delete("SAVE");
+    }
+
+
+    public void delete(String id) {
         SQLiteDatabase writer = DatabaseProvider.getWriter();
 
         String where = SAVES_ID + "=?";
-        String[] whereArgs = {"SAVE"};
+        String[] whereArgs = { id };
 
         int affectedRows = writer.delete(TABLE_SAVES, where, whereArgs);
         System.out.println("affected = " + affectedRows);
@@ -173,6 +178,10 @@ public class SaveManager {
         }
         cursor.close();
         return found;
+    }
+
+    public SavedSudokuGame load() {
+        return load("SAVE");
     }
 
     public class SavedSudokuGame {

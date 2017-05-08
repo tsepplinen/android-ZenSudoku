@@ -79,15 +79,6 @@ public class FavouritesManager {
         return true;
     }
 
-    public void close() {
-        if (writer != null) {
-            writer.close();
-        }
-        if (reader != null) {
-            reader.close();
-        }
-    }
-
     public boolean has(long seed, int difficulty) {
         String query = "SELECT * FROM " + TABLE_FAVOURITES
                 + " WHERE " + COL_NAME_SEED + " =?"

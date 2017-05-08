@@ -9,7 +9,7 @@ import android.view.View;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.ConfirmNewGameDialogFragment;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.Difficulty;
-import fi.tamk.tiko.seppalainen.toni.zensudoku.PlayActivity;
+import fi.tamk.tiko.seppalainen.toni.zensudoku.LoadingActivity;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.R;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.SaveManager;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.SaveManagerProvider;
@@ -53,13 +53,11 @@ public class FavouritesActivity extends AppCompatActivity {
             dialog = ConfirmNewGameDialogFragment.newInstance(difficulty, favourite.seed);
             dialog.show(getSupportFragmentManager(), "confirmNewGame");
         } else {
-            Intent intent = new Intent(this, PlayActivity.class);
+            Intent intent = new Intent(this, LoadingActivity.class);
             intent.putExtra("difficulty", difficulty);
             intent.putExtra("seed", favourite.seed);
             intent.putExtra("continue", false);
             startActivity(intent);
         }
-
-
     }
 }

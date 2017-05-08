@@ -32,7 +32,6 @@ public class MainMenuActivity extends AppCompatActivity {
         SudokuProvider.preload();
     }
 
-
     public void handleButtonClick(View view) {
         Difficulty difficulty = Difficulty.EASY;
         boolean favourites = false;
@@ -65,12 +64,10 @@ public class MainMenuActivity extends AppCompatActivity {
                 }
             }
         }
-
-
     }
 
     public void startGame(Difficulty difficulty, boolean shouldContinue) {
-        Intent intent = new Intent(this, PlayActivity.class);
+        Intent intent = new Intent(this, LoadingActivity.class);
         intent.putExtra("difficulty", difficulty);
         intent.putExtra("continue", shouldContinue);
         startActivity(intent);

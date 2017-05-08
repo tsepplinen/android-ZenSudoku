@@ -50,7 +50,7 @@ public class ConfirmNewGameDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.dialog_confirm_new_game_confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        Intent intent = new Intent(getContext(), PlayActivity.class);
+                        Intent intent = new Intent(getContext(), LoadingActivity.class);
                         intent.putExtra("continue", false);
 
                         final Bundle args = getArguments();

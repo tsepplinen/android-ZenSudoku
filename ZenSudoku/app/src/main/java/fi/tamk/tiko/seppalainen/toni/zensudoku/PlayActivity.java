@@ -8,8 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,45 +41,47 @@ public class PlayActivity extends AppCompatActivity {
 
         rootLayout = findViewById(R.id.play_root_layout);
 
-        int difficulty = 50;
-        Long seed = null;
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            Object dObj = extras.get("difficulty");
-            if (dObj instanceof Difficulty) {
-                Difficulty d = (Difficulty) extras.get("difficulty");
-                switch (d) {
-                    case EASY:
-                        difficulty = 50;
-                        break;
-                    case MEDIUM:
-                        difficulty = 40;
-                        break;
-                    case HARD:
-                        difficulty = 30;
-                        break;
-                    default:
-                        difficulty = 50;
-                }
-            }
-            this.continueGame = extras.getBoolean("continue");
-            if (extras.containsKey("seed")) {
-                seed = extras.getLong("seed");
-            }
-        }
+//        int difficulty = 50;
+//        Long seed = null;
+//        Bundle extras = getIntent().getExtras();
+//        if (extras != null) {
+//            Object dObj = extras.get("difficulty");
+//            if (dObj instanceof Difficulty) {
+//                Difficulty d = (Difficulty) extras.get("difficulty");
+//                switch (d) {
+//                    case EASY:
+//                        difficulty = 50;
+//                        break;
+//                    case MEDIUM:
+//                        difficulty = 40;
+//                        break;
+//                    case HARD:
+//                        difficulty = 30;
+//                        break;
+//                    default:
+//                        difficulty = 50;
+//                }
+//            }
+//            this.continueGame = extras.getBoolean("continue");
+//            if (extras.containsKey("seed")) {
+//                seed = extras.getLong("seed");
+//            }
+//        }
 
         cellSelectListener = new CellSelectListener(this);
         numberSelectListener = new NumberSelectListener(this);
 
-        SaveManager saveManager = SaveManagerProvider.getSaveManager();
-        if (continueGame && saveManager.hasSavedGame()) {
-            SaveManager.SavedSudokuGame loaded = saveManager.load();
-            sudokuData = SudokuProvider.getSudoku(loaded);
-        } else if (seed != null) {
-            sudokuData = SudokuProvider.getSudoku(difficulty, seed);
-        } else {
-            sudokuData = SudokuProvider.getSudoku(difficulty);
-        }
+//        SaveManager saveManager = SaveManagerProvider.getSaveManager();
+//        if (continueGame && saveManager.hasSavedGame()) {
+//            SaveManager.SavedSudokuGame loaded = saveManager.load();
+//            sudokuData = SudokuProvider.selectSudoku(loaded);
+//        } else if (seed != null) {
+//            sudokuData = SudokuProvider.selectSudoku(difficulty, seed);
+//        } else {
+//            sudokuData = SudokuProvider.selectSudoku(difficulty);
+//        }
+
+        sudokuData = SudokuProvider.getSelectedSudoku();
 
         favouritesManager = FavouritesManagerProvider.getFavouritesManager();
 
@@ -107,14 +107,14 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        SaveManager saveManager = SaveManagerProvider.getSaveManager();
-        if (!solved) {
-            saveManager.save(sudokuData, "SAVE");
-        }
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        SaveManager saveManager = SaveManagerProvider.getSaveManager();
+//        if (!solved) {
+//            saveManager.save(sudokuData, "SAVE");
+//        }
+//        super.onBackPressed();
+//    }
 
     public void selectCell(View v) {
         sudokuGrid.selectCell((SudokuGridCell) v);
@@ -202,12 +202,11 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         SaveManager saveManager = SaveManagerProvider.getSaveManager();
         if (!solved) {
             saveManager.save(sudokuData, "SAVE");
         }
-        super.onDestroy();
-        favouritesManager.close();
+        super.onStop();
     }
 }

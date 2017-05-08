@@ -20,14 +20,18 @@
         </activity>
         <activity
             android:name=".PlayActivity"
-            android:screenOrientation="portrait"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".favourites.FavouritesActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".WinActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".WinActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoadingActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

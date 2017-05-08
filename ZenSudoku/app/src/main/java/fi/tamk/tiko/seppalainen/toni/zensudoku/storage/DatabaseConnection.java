@@ -17,15 +17,20 @@ public class DatabaseConnection extends SQLiteOpenHelper {
 
     public DatabaseConnection(Context context) {
         super(context, "SUDOKU_DB", null, 1);
-        writer = getWritableDatabase();
-        reader = getReadableDatabase();
+        reconnect();
     }
 
     public SQLiteDatabase getWriter() {
+        if (!writer.isOpen()) {
+            reconnect();
+        }
         return writer;
     }
 
     public SQLiteDatabase getReader() {
+        if (!reader.isOpen()) {
+            reconnect();
+        }
         return reader;
     }
 
@@ -48,5 +53,14 @@ public class DatabaseConnection extends SQLiteOpenHelper {
         if (reader != null) {
             reader.close();
         }
+    }
+
+
+    /**
+     * Opens connections for writer and reader.
+     */
+    public void reconnect() {
+        writer = getWritableDatabase();
+        reader = getReadableDatabase();
     }
 }

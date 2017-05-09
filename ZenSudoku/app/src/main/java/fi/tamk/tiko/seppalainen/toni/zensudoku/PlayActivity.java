@@ -39,6 +39,8 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         rootLayout = findViewById(R.id.play_root_layout);
 
 //        int difficulty = 50;
@@ -165,6 +167,9 @@ public class PlayActivity extends AppCompatActivity {
             case R.id.play_action_favourite:
                 favouritePuzzle(item);
                 return true;
+            case android.R.id.home:
+                super.finish();
+                return true;
         }
         return false;
     }
@@ -214,4 +219,6 @@ public class PlayActivity extends AppCompatActivity {
         }
         super.onStop();
     }
+
+
 }

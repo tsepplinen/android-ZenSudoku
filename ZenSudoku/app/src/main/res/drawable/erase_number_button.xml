@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingBottom="0.2dp"
+    android:paddingLeft="0.2dp"
+    android:paddingRight="0.2dp"
+    android:paddingTop="0.2dp">
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:tint="@color/colorPrimary"
+            android:tintMode="src_over">
+            <corners android:radius="5dp"></corners>
+            <solid android:color="@color/colorPrimary"
+                ></solid>
+        </shape>
+    </item>
+    <item android:drawable="@android:drawable/ic_menu_delete">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:tint="@color/colorPrimary"
+            android:tintMode="add">
+            <corners android:radius="5dp"></corners>
+        </shape>
+    </item>
+</layer-list>
+
+<!--<bitmap android:src="@android:drawable/ic_menu_delete"-->
+<!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--android:tint="@color/colorPrimary"-->
+<!--android:antialias="true"-->
+    <!--/>-->

@@ -15,4 +15,5 @@
     <string name="win_screen_button_text">go back</string>
     <string name="loading_title">Loading</string>
     <string name="favourites_title">Favourites</string>
+    <string name="favourites_list_empty">No favourites found</string>
 </resources>

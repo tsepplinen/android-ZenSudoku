@@ -35,7 +35,7 @@ public class FavouritesActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new FavouritesItemDecorator(recyclerView.getContext()));
 
         favouritesManager = FavouritesManagerProvider.getFavouritesManager();
-
+        checkIfEmpty();
         adapter = new FavouritesListAdapter(favouritesManager);
         recyclerView.setAdapter(adapter);
     }
@@ -43,7 +43,24 @@ public class FavouritesActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        System.out.println("FavouritesActivity.onStart");
         favouritesManager.reloadData();
+        adapter.notifyDataSetChanged();
+        checkIfEmpty();
+
+    }
+
+    /**
+     * Checks if the list is empty and shows a text indicating that.
+     */
+    private void checkIfEmpty() {
+        if (adapter.getItemCount() == 0) {
+            View isEmptyText = findViewById(R.id.favourites_empty_list_textView);
+            isEmptyText.setVisibility(View.VISIBLE);
+        } else {
+            View isEmptyText = findViewById(R.id.favourites_empty_list_textView);
+            isEmptyText.setVisibility(View.GONE);
+        }
     }
 
     public void selectFavourite(View view) {

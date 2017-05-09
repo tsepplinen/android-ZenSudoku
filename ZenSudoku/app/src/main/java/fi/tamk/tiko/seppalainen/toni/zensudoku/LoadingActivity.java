@@ -57,7 +57,7 @@ public class LoadingActivity extends AppCompatActivity implements SudokuGenerati
 
     @Override
     public void onSudokuReady() {
-//        Intent intent = new Intent(this, PlayActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, PlayActivity.class);
+        startActivity(intent);
     }
 }

@@ -12,4 +12,5 @@
     <string name="dialog_confirm_new_game_confirm">new game</string>
     <string name="cancel">cancel</string>
     <string name="win_message_text">Puzzle Complete!</string>
+    <string name="win_screen_button_text">go back</string>
 </resources>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.ConfirmNewGameDialogFragment;
@@ -24,6 +25,9 @@ public class FavouritesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites);
+
+        getSupportActionBar().setTitle(R.string.favourites_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = (RecyclerView) findViewById(R.id.favouritesRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -59,5 +63,11 @@ public class FavouritesActivity extends AppCompatActivity {
             intent.putExtra("continue", false);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.finish();
+        return super.onOptionsItemSelected(item);
     }
 }

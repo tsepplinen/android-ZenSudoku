@@ -187,9 +187,14 @@ public class PlayActivity extends AppCompatActivity {
 
     private void checkSudoku() {
         if (sudokuData.isCorrect()) {
-            Toast.makeText(this, "No errors found", Toast.LENGTH_LONG).show();
+            Snackbar snackbar = Snackbar
+                    .make(rootLayout, "Great! No errors found your sudoku.", Snackbar.LENGTH_LONG);
+            snackbar.show();
+
         } else {
-            Toast.makeText(this, "Errors found", Toast.LENGTH_LONG).show();
+            Snackbar snackbar = Snackbar
+                    .make(rootLayout, "You have errors in your sudoku.", Snackbar.LENGTH_LONG);
+            snackbar.show();
         }
     }
 

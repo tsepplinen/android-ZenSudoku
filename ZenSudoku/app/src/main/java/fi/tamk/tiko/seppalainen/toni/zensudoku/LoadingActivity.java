@@ -13,6 +13,8 @@ public class LoadingActivity extends AppCompatActivity implements SudokuGenerati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
+        getSupportActionBar().setTitle(R.string.loading_title);
+
         int difficulty = 50;
         Long seed = null;
         Bundle extras = getIntent().getExtras();

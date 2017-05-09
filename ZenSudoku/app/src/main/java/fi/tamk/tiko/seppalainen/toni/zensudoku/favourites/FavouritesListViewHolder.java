@@ -7,12 +7,29 @@ import android.widget.TextView;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.R;
 
 /**
- * Created by tonis on 2017-05-05.
+ * Holds data for quick access for the favourites list.
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0509
+ * @since 1.7
  */
 public class FavouritesListViewHolder extends ViewHolder {
+
+    /**
+     * Handle to the View displaying the favourites date.
+     */
     public TextView dateView;
+
+    /**
+     * Handle to the View displaying the favourites difficulty.
+     */
     public TextView difficultyView;
 
+    /**
+     * Creates a list view holder instance with the given view.
+     *
+     * @param itemView View used to represent an item in the list.
+     */
     public FavouritesListViewHolder(View itemView) {
         super(itemView);
 

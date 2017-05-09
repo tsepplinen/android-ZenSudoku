@@ -11,6 +11,8 @@ public class WinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_win);
 
+        getSupportActionBar().setTitle("Game Finished");
+
         SaveManager sm = SaveManagerProvider.getSaveManager();
         if (sm.hasSavedGame()) {
             sm.deleteSave();

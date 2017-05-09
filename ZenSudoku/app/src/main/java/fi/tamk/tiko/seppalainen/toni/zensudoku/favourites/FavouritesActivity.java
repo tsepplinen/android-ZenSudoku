@@ -32,6 +32,7 @@ public class FavouritesActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.favouritesRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new FavouritesItemDecorator(recyclerView.getContext()));
 
         favouritesManager = FavouritesManagerProvider.getFavouritesManager();
 

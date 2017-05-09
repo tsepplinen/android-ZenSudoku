@@ -13,4 +13,5 @@
     <string name="cancel">cancel</string>
     <string name="win_message_text">Puzzle Complete!</string>
     <string name="win_screen_button_text">go back</string>
+    <string name="loading_title">Loading</string>
 </resources>

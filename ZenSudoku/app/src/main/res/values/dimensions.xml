@@ -6,4 +6,6 @@
     <dimen name="cell_border_thick">1.5dp</dimen>
     <dimen name="cell_border">0.5dp</dimen>
     <dimen name="win_message_size">35sp</dimen>
+    <dimen name="favourites_date_text_size">20sp</dimen>
+    <dimen name="favourites_difficulty_text_size">25sp</dimen>
 </resources>

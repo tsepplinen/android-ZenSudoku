@@ -21,7 +21,6 @@ import fi.tamk.tiko.seppalainen.toni.zensudoku.SaveManagerProvider;
  * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
  * @version 2017.0509
  * @since 1.7
- *
  */
 public class FavouritesActivity extends AppCompatActivity {
 

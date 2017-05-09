@@ -9,7 +9,6 @@ import java.util.Date;
  * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
  * @version 2017.0509
  * @since 1.7
- *
  */
 class Favourite {
     /**

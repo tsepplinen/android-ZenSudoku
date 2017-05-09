@@ -9,12 +9,28 @@ import android.view.View;
 
 /**
  * Decorates the list items with a line in between.
- */
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0509
+ * @since 1.7
+*/
 public class FavouritesItemDecorator extends RecyclerView.ItemDecoration {
 
+    /**
+     * Style attributes.
+     */
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
+
+    /**
+     * Handle to divider graphic.
+     */
     private Drawable divider;
 
+    /**
+     * Creates decorator for favourites listing.
+     *
+     * @param context The recyclerview context.
+     */
     public FavouritesItemDecorator(Context context) {
         final TypedArray styledAttributes = context.obtainStyledAttributes(ATTRS);
         divider = styledAttributes.getDrawable(0);

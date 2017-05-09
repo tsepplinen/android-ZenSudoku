@@ -7,6 +7,7 @@ import android.view.View;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.favourites.FavouritesActivity;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.favourites.FavouritesManagerProvider;
+import fi.tamk.tiko.seppalainen.toni.zensudoku.storage.DatabaseProvider;
 
 public class MainMenuActivity extends AppCompatActivity {
 
@@ -14,8 +15,9 @@ public class MainMenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+        DatabaseProvider.init(this);
         FavouritesManagerProvider.init(this);
-        SaveManagerProvider.init(this);
+        SaveManagerProvider.init();
     }
 
     @Override
@@ -27,6 +29,7 @@ public class MainMenuActivity extends AppCompatActivity {
         } else {
             findViewById(R.id.continue_game_button).setEnabled(false);
         }
+        SudokuProvider.preload();
     }
 
     public void handleButtonClick(View view) {
@@ -61,12 +64,10 @@ public class MainMenuActivity extends AppCompatActivity {
                 }
             }
         }
-
-
     }
 
     public void startGame(Difficulty difficulty, boolean shouldContinue) {
-        Intent intent = new Intent(this, PlayActivity.class);
+        Intent intent = new Intent(this, LoadingActivity.class);
         intent.putExtra("difficulty", difficulty);
         intent.putExtra("continue", shouldContinue);
         startActivity(intent);

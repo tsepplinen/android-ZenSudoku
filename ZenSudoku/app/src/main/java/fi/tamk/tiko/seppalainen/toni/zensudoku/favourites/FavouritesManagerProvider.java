@@ -10,7 +10,7 @@ public class FavouritesManagerProvider {
 
 
     public static void init(Activity context) {
-        favouritesManager = new FavouritesManager(context);
+        favouritesManager = new FavouritesManager();
     }
 
     public static FavouritesManager getFavouritesManager() {

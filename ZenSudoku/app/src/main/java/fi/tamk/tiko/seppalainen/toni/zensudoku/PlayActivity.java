@@ -8,20 +8,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.favourites.FavouritesManager;
+import fi.tamk.tiko.seppalainen.toni.zensudoku.favourites.FavouritesManagerProvider;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.HintData;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
 public class PlayActivity extends AppCompatActivity {
 
-    private TableLayout sudokuContainer;
-    private TextView selectedCell;
-    private LinearLayout numbersContainer;
     private CellSelectListener cellSelectListener;
     private NumberSelectListener numberSelectListener;
     private SudokuGrid sudokuGrid;
@@ -33,6 +29,11 @@ public class PlayActivity extends AppCompatActivity {
     private Menu menu;
     private ButtonBox buttonBox;
 
+    /**
+     * Tells whether the sudoku is already solved or not.
+     */
+    private boolean solved;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,53 +41,61 @@ public class PlayActivity extends AppCompatActivity {
 
         rootLayout = findViewById(R.id.play_root_layout);
 
-        int difficulty = 50;
-        Long seed = null;
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            Object dObj = extras.get("difficulty");
-            if (dObj instanceof Difficulty) {
-                Difficulty d = (Difficulty) extras.get("difficulty");
-                switch (d) {
-                    case EASY:
-                        difficulty = 50;
-                        break;
-                    case MEDIUM:
-                        difficulty = 40;
-                        break;
-                    case HARD:
-                        difficulty = 30;
-                        break;
-                    default:
-                        difficulty = 50;
-                }
-            }
-            this.continueGame = extras.getBoolean("continue");
-            if (extras.containsKey("seed")) {
-                seed = extras.getLong("seed");
-            }
-        }
+//        int difficulty = 50;
+//        Long seed = null;
+//        Bundle extras = getIntent().getExtras();
+//        if (extras != null) {
+//            Object dObj = extras.get("difficulty");
+//            if (dObj instanceof Difficulty) {
+//                Difficulty d = (Difficulty) extras.get("difficulty");
+//                switch (d) {
+//                    case EASY:
+//                        difficulty = 50;
+//                        break;
+//                    case MEDIUM:
+//                        difficulty = 40;
+//                        break;
+//                    case HARD:
+//                        difficulty = 30;
+//                        break;
+//                    default:
+//                        difficulty = 50;
+//                }
+//            }
+//            this.continueGame = extras.getBoolean("continue");
+//            if (extras.containsKey("seed")) {
+//                seed = extras.getLong("seed");
+//            }
+//        }
 
         cellSelectListener = new CellSelectListener(this);
         numberSelectListener = new NumberSelectListener(this);
 
-        SaveManager saveManager = SaveManagerProvider.getSaveManager();
-        if (continueGame && saveManager.hasSavedGame()) {
-            SaveManager.SavedSudokuGame loaded = saveManager.load();
-            sudokuData = SudokuProvider.getSudoku(loaded);
-        } else if (seed != null) {
-            sudokuData = SudokuProvider.getSudoku(difficulty, seed);
-        } else {
-            sudokuData = SudokuProvider.getSudoku(difficulty);
-        }
+//        SaveManager saveManager = SaveManagerProvider.getSaveManager();
+//        if (continueGame && saveManager.hasSavedGame()) {
+//            SaveManager.SavedSudokuGame loaded = saveManager.load();
+//            sudokuData = SudokuProvider.selectSudoku(loaded);
+//        } else if (seed != null) {
+//            sudokuData = SudokuProvider.selectSudoku(difficulty, seed);
+//        } else {
+//            sudokuData = SudokuProvider.selectSudoku(difficulty);
+//        }
 
-        favouritesManager = new FavouritesManager(this);
+        sudokuData = SudokuProvider.getSelectedSudoku();
+
+        favouritesManager = FavouritesManagerProvider.getFavouritesManager();
 
         sudokuGrid = new SudokuGrid(this, cellSelectListener);
         sudokuGrid.setSudoku(sudokuData);
 
 
         buttonBox = new ButtonBox(this, numberSelectListener);
+    }
+
+    @Override
+    public void onEnterAnimationComplete() {
+        super.onEnterAnimationComplete();
+        solved = false;
     }
 
     private void initFavouriteButton() {
@@ -98,12 +107,14 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        SaveManager saveManager = SaveManagerProvider.getSaveManager();
-        saveManager.save(sudokuData);
-        super.onBackPressed();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        SaveManager saveManager = SaveManagerProvider.getSaveManager();
+//        if (!solved) {
+//            saveManager.save(sudokuData, "SAVE");
+//        }
+//        super.onBackPressed();
+//    }
 
     public void selectCell(View v) {
         sudokuGrid.selectCell((SudokuGridCell) v);
@@ -125,14 +136,9 @@ public class PlayActivity extends AppCompatActivity {
 
     private void puzzleSolved() {
 
+        solved = true;
         Intent intent = new Intent(this, WinActivity.class);
         startActivity(intent);
-
-
-//
-//        Snackbar snackbar = Snackbar
-//                .make(rootLayout, "Congratulations, you have finished the sudoku!", Snackbar.LENGTH_LONG);
-//        snackbar.show();
     }
 
 
@@ -195,12 +201,12 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
         SaveManager saveManager = SaveManagerProvider.getSaveManager();
-        saveManager.save(sudokuData);
-        super.onDestroy();
-        favouritesManager.close();
+        if (!solved) {
+            saveManager.save(sudokuData, "SAVE");
+        }
+        super.onStop();
     }
 }

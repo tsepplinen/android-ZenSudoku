@@ -128,7 +128,11 @@ public class SudokuGrid {
             if (oldValue != number) {
                 numberGroupManager.remove(selectedCell);
                 selectedCell.setValue(number);
-                sudokuData.place(number, selectedCell.getCellX(), selectedCell.getCellY());
+                if (number != 0) {
+                    sudokuData.place(number, selectedCell.getCellX(), selectedCell.getCellY());
+                } else {
+                    sudokuData.remove(selectedCell.getCellX(), selectedCell.getCellY());
+                }
                 numberGroupManager.add(selectedCell);
                 numberGroupManager.highlightNumbers(number);
             }

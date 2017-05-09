@@ -192,12 +192,12 @@ public class PlayActivity extends AppCompatActivity {
     private void checkSudoku() {
         if (sudokuData.isCorrect()) {
             Snackbar snackbar = Snackbar
-                    .make(rootLayout, "Great! No errors found your sudoku.", Snackbar.LENGTH_LONG);
+                    .make(rootLayout, R.string.check_sudoku_correct, Snackbar.LENGTH_LONG);
             snackbar.show();
 
         } else {
             Snackbar snackbar = Snackbar
-                    .make(rootLayout, "You have errors in your sudoku.", Snackbar.LENGTH_LONG);
+                    .make(rootLayout, R.string.check_sudoku_incorrect, Snackbar.LENGTH_LONG);
             snackbar.show();
         }
     }

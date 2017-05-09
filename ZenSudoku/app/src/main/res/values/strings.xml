@@ -4,7 +4,7 @@
     <string name="main_menu_play_easy_button_text">Easy</string>
     <string name="main_menu_play_medium_button_text">Medium</string>
     <string name="main_menu_play_hard_button_text">Hard</string>
-    <string name="play_action_hint_text">Hint</string>
+    <string name="play_action_hint_text">Get Hint</string>
     <string name="play_action_check_text">Check puzzle</string>
     <string name="play_action_favourite_text">Add to favourites</string>
     <string name="main_menu_favourites_button_text">favourites</string>

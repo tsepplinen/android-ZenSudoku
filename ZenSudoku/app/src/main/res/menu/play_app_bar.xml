@@ -12,7 +12,7 @@
         android:id="@+id/play_action_hint"
         android:icon="@android:drawable/ic_menu_help"
         android:title="@string/play_action_hint_text"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <item android:id="@+id/play_action_check"
         android:title="@string/play_action_check_text"

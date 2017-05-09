@@ -5,6 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import fi.tamk.tiko.seppalainen.toni.zensudoku.R;
 
 public class FavouritesListAdapter extends RecyclerView.Adapter<FavouritesListViewHolder>{
@@ -26,9 +29,16 @@ public class FavouritesListAdapter extends RecyclerView.Adapter<FavouritesListVi
     public void onBindViewHolder(FavouritesListViewHolder holder, int position) {
         Favourite favourite = favouritesManager.get(position);
         if (favourite != null) {
-            holder.dateView.setText(favourite.date.toString());
+
+            holder.dateView.setText(createDateString(favourite.date));
             holder.difficultyView.setText(favourite.difficultyString);
         }
+    }
+
+    private String createDateString(Calendar date) {
+
+        String format = "%1$tY-%1$tm-%1$td  %1$tH:%1$tM";
+        return String.format(format, date);
     }
 
     @Override

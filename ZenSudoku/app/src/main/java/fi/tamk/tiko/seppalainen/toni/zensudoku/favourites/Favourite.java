@@ -1,18 +1,20 @@
 package fi.tamk.tiko.seppalainen.toni.zensudoku.favourites;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
  * Holds data for a single entry in favourites.
  */
 class Favourite {
-    public Date date;
+    public Calendar date;
     public int difficulty;
     public long seed;
     public String difficultyString;
 
     public Favourite(long time, int difficulty, long seed) {
-        this.date = new Date(time);
+        this.date = Calendar.getInstance();
+        date.setTime(new Date(time));
         this.difficulty = difficulty;
         this.seed = seed;
         switch (difficulty) {

@@ -55,7 +55,12 @@ class ButtonBox {
         }
 
         Button button = new Button(context);
-        button.setText("X");
+        button.setText(" ");
+        button.setBackgroundResource(R.drawable.erase_number_button);
+//        button.setBackgroundResource(android.R.drawable.ic_menu_delete);
+//        Drawable drawable = button.getBackground();
+//        int color = ContextCompat.getColor(context, R.color.colorPrimary);
+//        drawable.setColorFilter(color, PorterDuff.Mode.ADD);
         button.setGravity(Gravity.CENTER);
         button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE);
         row2.addView(button);

@@ -4,69 +4,89 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fi.tamk.tiko.seppalainen.toni.zensudoku.MainMenuActivity">
+    tools:context="fi.tamk.tiko.seppalainen.toni.zensudoku.MainMenuActivity"
+    android:layout_margin="@dimen/main_menu_margin">
 
     <Button
         android:id="@+id/continue_game_button"
         android:layout_width="@dimen/main_menu_button_width"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/main_menu_continue_game_button_text"
+        android:textSize="@dimen/main_menu_button_text_size"
+        android:textColor="@color/colorMainMenuButtonText"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/play_easy_button"
-        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_chainStyle="spread"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:onClick="handleButtonClick"
+        android:background="@drawable/main_menu_button"
+        android:layout_marginBottom="10dp"
         />
 
 
     <Button
         android:id="@+id/play_easy_button"
         android:layout_width="@dimen/main_menu_button_width"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/main_menu_play_easy_button_text"
+        android:textColor="@color/colorMainMenuButtonText"
+        android:textSize="@dimen/main_menu_button_text_size"
         app:layout_constraintTop_toBottomOf="@id/continue_game_button"
         app:layout_constraintBottom_toTopOf="@+id/play_medium_button"
 
         app:layout_constraintLeft_toLeftOf="@+id/continue_game_button"
         android:onClick="handleButtonClick"
+        android:background="@drawable/main_menu_button"
+        android:layout_marginBottom="10dp"
         />
 
     <Button
         android:id="@+id/play_medium_button"
         android:layout_width="@dimen/main_menu_button_width"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/main_menu_play_medium_button_text"
+        android:textColor="@color/colorMainMenuButtonText"
+        android:textSize="@dimen/main_menu_button_text_size"
         app:layout_constraintTop_toBottomOf="@+id/play_easy_button"
         app:layout_constraintBottom_toTopOf="@+id/play_hard_button"
 
         app:layout_constraintLeft_toLeftOf="@+id/play_easy_button"
         android:onClick="handleButtonClick"
+        android:background="@drawable/main_menu_button"
+        android:layout_marginBottom="10dp"
         />
 
     <Button
         android:id="@+id/play_hard_button"
         android:layout_width="@dimen/main_menu_button_width"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/main_menu_play_hard_button_text"
+        android:textColor="@color/colorMainMenuButtonText"
+        android:textSize="@dimen/main_menu_button_text_size"
         app:layout_constraintTop_toBottomOf="@+id/play_medium_button"
         app:layout_constraintBottom_toTopOf="@+id/favourites_button"
 
         app:layout_constraintLeft_toLeftOf="@+id/play_easy_button"
         android:onClick="handleButtonClick"
+        android:background="@drawable/main_menu_button"
+        android:layout_marginBottom="10dp"
         />
 
     <Button
         android:id="@+id/favourites_button"
         android:layout_width="@dimen/main_menu_button_width"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="@string/main_menu_favourites_button_text"
+        android:textColor="@color/colorMainMenuButtonText"
+        android:textSize="@dimen/main_menu_button_text_size"
         app:layout_constraintTop_toBottomOf="@+id/play_hard_button"
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintLeft_toLeftOf="@+id/play_easy_button"
         android:onClick="handleButtonClick"
+        android:background="@drawable/main_menu_button"
         />
 
 

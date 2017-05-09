@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:gravity="center"
-        android:textSize="30dp"
+        android:textSize="@dimen/favourites_date_text_size"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -26,12 +26,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:gravity="center"
-        android:textSize="30dp"
+        android:textSize="@dimen/favourites_difficulty_text_size"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/favouriteDate"
         app:layout_constraintRight_toRightOf="parent"
-
         />
 
 </android.support.constraint.ConstraintLayout>

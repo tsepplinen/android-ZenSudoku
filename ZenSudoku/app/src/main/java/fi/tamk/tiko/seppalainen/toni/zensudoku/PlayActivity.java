@@ -1,15 +1,14 @@
 package fi.tamk.tiko.seppalainen.toni.zensudoku;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.favourites.FavouritesManager;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.favourites.FavouritesManagerProvider;
@@ -125,7 +124,7 @@ public class PlayActivity extends AppCompatActivity {
 
     public void selectNumber(View v) {
         TextView textView = (TextView) v;
-        if (textView.getText().equals("X")) {
+        if (textView.getText().equals(" ")) {
             sudokuGrid.placeNumberToSelected(0);
         } else {
             selectedNumber = Integer.parseInt(String.valueOf(textView.getText()));
@@ -193,12 +192,12 @@ public class PlayActivity extends AppCompatActivity {
     private void checkSudoku() {
         if (sudokuData.isCorrect()) {
             Snackbar snackbar = Snackbar
-                    .make(rootLayout, "Great! No errors found your sudoku.", Snackbar.LENGTH_LONG);
+                    .make(rootLayout, R.string.check_sudoku_correct, Snackbar.LENGTH_LONG);
             snackbar.show();
 
         } else {
             Snackbar snackbar = Snackbar
-                    .make(rootLayout, "You have errors in your sudoku.", Snackbar.LENGTH_LONG);
+                    .make(rootLayout, R.string.check_sudoku_incorrect, Snackbar.LENGTH_LONG);
             snackbar.show();
         }
     }

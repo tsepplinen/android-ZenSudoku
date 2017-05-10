@@ -1,6 +1,5 @@
 package fi.tamk.tiko.seppalainen.toni.zensudoku;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -17,15 +16,53 @@ import fi.tamk.tiko.seppalainen.toni.zensudoku.storage.DatabaseProvider;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.SudokuCell;
 
+/**
+ * Manages saving game state and sudoku puzzles to local database.
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0509
+ * @since 1.7
+ */
 public class SaveManager {
 
+    /**
+     * Name of the table for saves.
+     */
     public static final String TABLE_SAVES = "SAVES";
+
+    /**
+     * Column name for id.
+     */
     public static final String SAVES_ID = "id";
+
+    /**
+     * Column name for initial data.
+     */
     public static final String SAVES_INITIAL = "initial";
+
+    /**
+     * Column name for result data.
+     */
     public static final String SAVES_RESULT = "result";
+
+    /**
+     * Column name for inputted data.
+     */
     public static final String SAVES_DATA = "data";
+
+    /**
+     * Column name for seed.
+     */
     public static final String SAVES_SEED = "seed";
+
+    /**
+     * Column name for difficulty.
+     */
     public static final String SAVES_DIFFICULTY = "difficulty";
+
+    /**
+     * Query string for creating the table.
+     */
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_SAVES + " ("
                     + SAVES_ID + " TEXT NOT NULL,"
@@ -36,10 +73,21 @@ public class SaveManager {
                     + SAVES_DIFFICULTY + " INTEGER NOT NULL,"
                     + "PRIMARY KEY ( " + SAVES_ID + " ))";
 
+    /**
+     * Tells whether a saved game exists.
+     *
+     * @return True if a saved game was found, false if not.
+     */
     public boolean hasSavedGame() {
         return has("SAVE");
     }
 
+    /**
+     * Loads a saved sudoku.
+     *
+     * @param id The id of the sudoku to load.
+     * @return Data for the saved sudoku game as {@link SavedSudokuGame}
+     */
     public SavedSudokuGame load(String id) {
 
         SQLiteDatabase reader = DatabaseProvider.getReader();
@@ -51,7 +99,7 @@ public class SaveManager {
             String[] values = {id};
             Cursor cursor = reader.rawQuery(query, values);
 
-            if(cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 String initial = cursor.getString(1);
                 String result = cursor.getString(2);
                 String data = cursor.getString(3);
@@ -76,6 +124,12 @@ public class SaveManager {
         return null;
     }
 
+    /**
+     * Creates a list of {@link SudokuCell} from JSONArray input.
+     *
+     * @param array The array of cells as a JSONArray.
+     * @return Created list of cells.
+     */
     private List<SudokuCell> getCells(JSONArray array) {
 
         List<SudokuCell> list = new ArrayList<>();
@@ -97,6 +151,13 @@ public class SaveManager {
         return list;
     }
 
+    /**
+     * Saves a sudoku to the database.
+     *
+     * @param sudoku The sudoku to save.
+     * @param id     The id to save the sudoku with.
+     * @return True if save was successful, false otherwise.
+     */
     public boolean save(Sudoku sudoku, String id) {
         System.out.println("SaveManager.save");
         SQLiteDatabase writer = DatabaseProvider.getWriter();
@@ -123,13 +184,20 @@ public class SaveManager {
         values.put(SAVES_DATA, data.toString());
 
         try {
-           writer.replaceOrThrow(TABLE_SAVES, null, values);
+            writer.replaceOrThrow(TABLE_SAVES, null, values);
         } catch (SQLException e) {
             return false;
         }
         return true;
     }
 
+    /**
+     * Creates a JSONArray object from a list of sudoku cells.
+     *
+     * @param list The list to convert.
+     * @return Created JSONArray.
+     * @throws JSONException when unable to add data to JSONArray.
+     */
     private JSONArray createJsonArray(List<SudokuCell> list) throws JSONException {
         JSONArray array = new JSONArray();
         for (SudokuCell cell : list) {
@@ -142,16 +210,24 @@ public class SaveManager {
         return array;
     }
 
+    /**
+     * Deletes a saved game from the database.
+     */
     public void deleteSave() {
         delete("SAVE");
     }
 
 
+    /**
+     * Deletes a saved sudoku with given id from the database.
+     *
+     * @param id Id of the sudoku to delete.
+     */
     public void delete(String id) {
         SQLiteDatabase writer = DatabaseProvider.getWriter();
 
         String where = SAVES_ID + "=?";
-        String[] whereArgs = { id };
+        String[] whereArgs = {id};
 
         int affectedRows = writer.delete(TABLE_SAVES, where, whereArgs);
         System.out.println("affected = " + affectedRows);
@@ -169,7 +245,7 @@ public class SaveManager {
         String query = "SELECT * FROM " + TABLE_SAVES
                 + " WHERE " + SAVES_ID + " =?"
                 + " LIMIT 1";
-        String[] values = {""+id};
+        String[] values = {"" + id};
 
         boolean found = false;
         Cursor cursor = reader.rawQuery(query, values);
@@ -180,16 +256,47 @@ public class SaveManager {
         return found;
     }
 
+    /**
+     * Loads a saved game.
+     *
+     * @return Loaded game.
+     */
     public SavedSudokuGame load() {
         return load("SAVE");
     }
 
+    /**
+     * Represents a saved sudokus data.
+     *
+     * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+     * @version 2017.0509
+     * @since 1.7
+     */
     public class SavedSudokuGame {
 
+        /**
+         * Seed of the sudoku.
+         */
         public long seed;
+
+        /**
+         * Difficulty of the sudoku.
+         */
         public int difficulty;
+
+        /**
+         * Initial cell values of the sudoku.
+         */
         public List<SudokuCell> initial;
+
+        /**
+         * Correct solution values of the sudoku.
+         */
         public List<SudokuCell> result;
+
+        /**
+         * All numbers in the sudoku.
+         */
         public List<SudokuCell> data;
     }
 }

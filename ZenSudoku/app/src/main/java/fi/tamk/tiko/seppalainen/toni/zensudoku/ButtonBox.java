@@ -6,13 +6,29 @@ import android.view.Gravity;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+/**
+ * Contains the number selection buttons.
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0509
+ * @since 1.7
+ */
 class ButtonBox {
-    private static final float TEXT_SIZE = 40;
-    private final LinearLayout numbersContainer;
 
+    /**
+     * Size of the text for the buttons.
+     */
+    private static final float TEXT_SIZE = 40;
+
+    /**
+     * Creates a button box initializing.
+     *
+     * @param context              Applications context.
+     * @param numberSelectListener Listener for receiving selected numbers.
+     */
     public ButtonBox(Activity context, NumberSelectListener numberSelectListener) {
 
-        numbersContainer = (LinearLayout) context.findViewById(R.id.numbersContainer);
+        LinearLayout numbersContainer = (LinearLayout) context.findViewById(R.id.numbersContainer);
 
         int buttonSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 68, context.getResources().getDisplayMetrics());
 
@@ -57,10 +73,6 @@ class ButtonBox {
         Button button = new Button(context);
         button.setText(" ");
         button.setBackgroundResource(R.drawable.erase_number_button);
-//        button.setBackgroundResource(android.R.drawable.ic_menu_delete);
-//        Drawable drawable = button.getBackground();
-//        int color = ContextCompat.getColor(context, R.color.colorPrimary);
-//        drawable.setColorFilter(color, PorterDuff.Mode.ADD);
         button.setGravity(Gravity.CENTER);
         button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE);
         row2.addView(button);
@@ -72,10 +84,7 @@ class ButtonBox {
 
         button.setOnClickListener(numberSelectListener);
 
-
         numbersContainer.addView(row1);
         numbersContainer.addView(row2);
     }
-
-
 }

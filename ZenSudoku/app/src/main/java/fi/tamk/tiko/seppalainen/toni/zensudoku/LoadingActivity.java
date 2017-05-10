@@ -13,7 +13,7 @@ import android.support.v7.app.AppCompatActivity;
  */
 public class LoadingActivity extends AppCompatActivity implements SudokuGenerationListener {
 
-    /*
+    /**
      * Sets up the activity when receiving a creation event.
      *
      * @param savedInstanceState Previously save instance or null.

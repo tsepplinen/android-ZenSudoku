@@ -2,9 +2,18 @@ package fi.tamk.tiko.seppalainen.toni.zensudoku;
 
 import android.util.SparseArray;
 
-
+/**
+ * Manages number group contents and which groups are highlighted.
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0509
+ * @since 1.7
+ */
 class NumberGroupManager {
 
+    /**
+     * Contains the number groups.
+     */
     private SparseArray<SudokuCellGroup> numberGroups;
 
     /**
@@ -12,6 +21,9 @@ class NumberGroupManager {
      */
     private int currentHighlight = 0;
 
+    /**
+     * Creates a new manager for number groups.
+     */
     public NumberGroupManager() {
         numberGroups = new SparseArray<>();
 
@@ -20,10 +32,21 @@ class NumberGroupManager {
         }
     }
 
+    /**
+     * Retrieves a number group from the manager.
+     *
+     * @param value Index of the requested number group.
+     * @return The requested number group.
+     */
     public SudokuCellGroup getGroup(int value) {
         return numberGroups.get(value);
     }
 
+    /**
+     * Highlights the numbers in a group specified by value.
+     *
+     * @param value Index of the group to highlight.
+     */
     public void highlightNumbers(int value) {
 
         // Selecting non empty value
@@ -41,17 +64,13 @@ class NumberGroupManager {
 
             currentHighlight = value;
         }
-
     }
 
-    public void clearNumberHighlight() {
-        SudokuCellGroup group = getGroup(currentHighlight);
-        if (group != null) {
-            group.setNumberHighlight(false);
-        }
-        currentHighlight = 0;
-    }
-
+    /**
+     * Adds a {@link SudokuGridCell} to a correct group for the cells value.
+     *
+     * @param cell {@link SudokuGridCell} to add to a number group.
+     */
     public void add(SudokuGridCell cell) {
         SudokuCellGroup group = numberGroups.get(cell.getValue());
         if (group != null) {
@@ -59,6 +78,11 @@ class NumberGroupManager {
         }
     }
 
+    /**
+     * Removes a {@link SudokuGridCell} from a correct group for the cells value.
+     *
+     * @param cell {@link SudokuGridCell} to remove from a number group.
+     */
     public void remove(SudokuGridCell cell) {
         SudokuCellGroup group = numberGroups.get(cell.getValue());
         if (group != null) {

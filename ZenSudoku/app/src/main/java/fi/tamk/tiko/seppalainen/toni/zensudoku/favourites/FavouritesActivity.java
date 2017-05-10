@@ -54,9 +54,9 @@ public class FavouritesActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new FavouritesItemDecorator(recyclerView.getContext()));
 
         favouritesManager = FavouritesManagerProvider.getFavouritesManager();
-        checkIfEmpty();
         adapter = new FavouritesListAdapter(favouritesManager);
         recyclerView.setAdapter(adapter);
+        checkIfEmpty();
     }
 
     @Override
@@ -65,7 +65,6 @@ public class FavouritesActivity extends AppCompatActivity {
         favouritesManager.reloadData();
         adapter.notifyDataSetChanged();
         checkIfEmpty();
-
     }
 
     /**

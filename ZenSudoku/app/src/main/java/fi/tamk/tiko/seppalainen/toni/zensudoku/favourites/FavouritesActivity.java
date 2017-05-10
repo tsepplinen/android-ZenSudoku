@@ -15,11 +15,30 @@ import fi.tamk.tiko.seppalainen.toni.zensudoku.R;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.SaveManager;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.SaveManagerProvider;
 
+/**
+ * Represents a favourites listing activity.
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0509
+ * @since 1.7
+ */
 public class FavouritesActivity extends AppCompatActivity {
 
+    /**
+     * Handle to recycler view in the Activity.
+     */
     private RecyclerView recyclerView;
+
+    /**
+     * Adapter for the recycler view.
+     */
     private FavouritesListAdapter adapter;
+
+    /**
+     * Handle to favourites manager.
+     */
     private FavouritesManager favouritesManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +62,6 @@ public class FavouritesActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        System.out.println("FavouritesActivity.onStart");
         favouritesManager.reloadData();
         adapter.notifyDataSetChanged();
         checkIfEmpty();
@@ -63,6 +81,11 @@ public class FavouritesActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handles list item selection from the favourites list.
+     *
+     * @param view The clicked view component.
+     */
     public void selectFavourite(View view) {
 
         SaveManager sm = SaveManagerProvider.getSaveManager();

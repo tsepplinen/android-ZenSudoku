@@ -15,24 +15,50 @@ import fi.tamk.tiko.seppalainen.toni.zensudoku.favourites.FavouritesManagerProvi
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.HintData;
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
+/**
+ * Represent the play screen of the game.
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0509
+ * @since 1.7
+ */
 public class PlayActivity extends AppCompatActivity {
 
-    private CellSelectListener cellSelectListener;
-    private NumberSelectListener numberSelectListener;
+    /**
+     * Provides access to the sudoku grid.
+     */
     private SudokuGrid sudokuGrid;
-    private int selectedNumber;
-    private boolean continueGame = false;
+
+    /**
+     * Provides access to the sudoku data object.
+     */
     private Sudoku sudokuData;
+
+    /**
+     * Provides access to the root of the {@link PlayActivity}'s layout.
+     */
     private View rootLayout;
+
+    /**
+     * Provides access to favourites manager for adding puzzles to favourites.
+     */
     private FavouritesManager favouritesManager;
+
+    /**
+     * Provides access to this activity's AppBar menu.
+     */
     private Menu menu;
-    private ButtonBox buttonBox;
 
     /**
      * Tells whether the sudoku is already solved or not.
      */
     private boolean solved;
 
+    /**
+     * Sets up the activity.
+     *
+     * @param savedInstanceState Previously saved state or null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,45 +68,9 @@ public class PlayActivity extends AppCompatActivity {
 
         rootLayout = findViewById(R.id.play_root_layout);
 
-//        int difficulty = 50;
-//        Long seed = null;
-//        Bundle extras = getIntent().getExtras();
-//        if (extras != null) {
-//            Object dObj = extras.get("difficulty");
-//            if (dObj instanceof Difficulty) {
-//                Difficulty d = (Difficulty) extras.get("difficulty");
-//                switch (d) {
-//                    case EASY:
-//                        difficulty = 50;
-//                        break;
-//                    case MEDIUM:
-//                        difficulty = 40;
-//                        break;
-//                    case HARD:
-//                        difficulty = 30;
-//                        break;
-//                    default:
-//                        difficulty = 50;
-//                }
-//            }
-//            this.continueGame = extras.getBoolean("continue");
-//            if (extras.containsKey("seed")) {
-//                seed = extras.getLong("seed");
-//            }
-//        }
 
-        cellSelectListener = new CellSelectListener(this);
-        numberSelectListener = new NumberSelectListener(this);
-
-//        SaveManager saveManager = SaveManagerProvider.getSaveManager();
-//        if (continueGame && saveManager.hasSavedGame()) {
-//            SaveManager.SavedSudokuGame loaded = saveManager.load();
-//            sudokuData = SudokuProvider.selectSudoku(loaded);
-//        } else if (seed != null) {
-//            sudokuData = SudokuProvider.selectSudoku(difficulty, seed);
-//        } else {
-//            sudokuData = SudokuProvider.selectSudoku(difficulty);
-//        }
+        CellSelectListener cellSelectListener = new CellSelectListener(this);
+        NumberSelectListener numberSelectListener = new NumberSelectListener(this);
 
         sudokuData = SudokuProvider.getSelectedSudoku();
 
@@ -89,16 +79,22 @@ public class PlayActivity extends AppCompatActivity {
         sudokuGrid = new SudokuGrid(this, cellSelectListener);
         sudokuGrid.setSudoku(sudokuData);
 
-
-        buttonBox = new ButtonBox(this, numberSelectListener);
+        // Add a button box the the activity.
+        new ButtonBox(this, numberSelectListener);
     }
 
+    /**
+     * Marks the game not solved when starting.
+     */
     @Override
-    public void onEnterAnimationComplete() {
-        super.onEnterAnimationComplete();
+    public void onStart() {
+        super.onStart();
         solved = false;
     }
 
+    /**
+     * Initializes the button for adding a sudoku to favourites.
+     */
     private void initFavouriteButton() {
         MenuItem item = menu.getItem(0);
         if (favouritesManager.has(sudokuData.getSeed(), sudokuData.getDifficulty())) {
@@ -108,26 +104,27 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        SaveManager saveManager = SaveManagerProvider.getSaveManager();
-//        if (!solved) {
-//            saveManager.save(sudokuData, "SAVE");
-//        }
-//        super.onBackPressed();
-//    }
-
+    /**
+     * Selects a cell given as a parameter.
+     *
+     * @param v The view component representing the selected cell.
+     */
     public void selectCell(View v) {
         sudokuGrid.selectCell((SudokuGridCell) v);
     }
 
 
+    /**
+     * Places a selected number to the selected cell.
+     *
+     * @param v The view component representing the selected number.
+     */
     public void selectNumber(View v) {
         TextView textView = (TextView) v;
         if (textView.getText().equals(" ")) {
             sudokuGrid.placeNumberToSelected(0);
         } else {
-            selectedNumber = Integer.parseInt(String.valueOf(textView.getText()));
+            int selectedNumber = Integer.parseInt(String.valueOf(textView.getText()));
             sudokuGrid.placeNumberToSelected(selectedNumber);
             if (sudokuData.isSolved()) {
                 puzzleSolved();
@@ -135,13 +132,14 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks if the puzzle is solved.
+     */
     private void puzzleSolved() {
-
         solved = true;
         Intent intent = new Intent(this, WinActivity.class);
         startActivity(intent);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -153,6 +151,12 @@ public class PlayActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Determines which tool was selected and activates the tool.
+     *
+     * @param item The selected menu item.
+     * @return True to consume menu processing, false to allow it to continue.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -173,22 +177,29 @@ public class PlayActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Activates a tool that adds the sudoku to favourites.
+     *
+     * @param item The menu item activating favourite action.
+     */
     private void favouritePuzzle(MenuItem item) {
         if (favouritesManager.has(sudokuData.getSeed(), sudokuData.getDifficulty())) {
             favouritesManager.remove(sudokuData);
             Snackbar snackbar = Snackbar
-                    .make(rootLayout, "Puzzle removed from favourites", Snackbar.LENGTH_LONG);
+                    .make(rootLayout, R.string.play_puzzle_removed_from_favourites, Snackbar.LENGTH_LONG);
             snackbar.show();
             item.setIcon(android.R.drawable.btn_star_big_off);
         } else if (favouritesManager.add(sudokuData)) {
             Snackbar snackbar = Snackbar
-                    .make(rootLayout, "Puzzle added to favourites", Snackbar.LENGTH_LONG);
+                    .make(rootLayout, R.string.play_puzzle_added_to_favourites, Snackbar.LENGTH_LONG);
             snackbar.show();
             item.setIcon(android.R.drawable.btn_star_big_on);
-
         }
     }
 
+    /**
+     * Checks if the sudoku is still correctly filled.
+     */
     private void checkSudoku() {
         if (sudokuData.isCorrect()) {
             Snackbar snackbar = Snackbar
@@ -202,6 +213,9 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Places a random number into the sudoku as a hint.
+     */
     private void useHint() {
         HintData hintData = sudokuData.useHint();
         if (hintData != null) {
@@ -218,6 +232,4 @@ public class PlayActivity extends AppCompatActivity {
         }
         super.onStop();
     }
-
-
 }

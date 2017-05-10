@@ -1,14 +1,37 @@
 package fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku;
 
+/**
+ * Provides methods for solving a sudoku.
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0509
+ * @since 1.7
+ */
 public class SudokuSolver {
 
+    /**
+     * Handle to a sudoku data.
+     */
     private Sudoku sudoku;
 
+    /**
+     * Checks if a sudoku has exactly one solution.
+     *
+     * @param toCheck The sudoku to check uniqueness for.
+     * @return True if the given sudoku is unique, false otherwise.
+     */
     public boolean isUnique(Sudoku toCheck) {
         this.sudoku = toCheck;
         return checkRecursive(0, 0) == 1;
     }
 
+    /**
+     * Recursively checks the amount of solutions a sudoku has.
+     *
+     * @param x X coordinate currently processed.
+     * @param y Y coordinate currently processed.
+     * @return 1 if done, 2 if count exceeds 1.
+     */
     private int checkRecursive(int x, int y) {
 
         // If past last row

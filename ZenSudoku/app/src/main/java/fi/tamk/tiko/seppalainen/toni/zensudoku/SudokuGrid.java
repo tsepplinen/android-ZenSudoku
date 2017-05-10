@@ -6,34 +6,81 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
+/**
+ * Represent visual grid of the sudoku game.
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0509
+ * @since 1.7
+ */
 public class SudokuGrid {
 
-    private TableLayout sudokuContainer;
+    /**
+     * The parent activity.
+     */
     private Activity parent;
+
+    /**
+     * Listens to cell selections.
+     */
     private CellSelectListener cellSelectListener;
+
+    /**
+     * Row groups of the grids cells.
+     */
     private ArrayList<SudokuCellGroup> rows;
+
+    /**
+     * Column groups of the grids cells.
+     */
     private ArrayList<SudokuCellGroup> columns;
+
+    /**
+     * 3x3 Square groups of the grids cells.
+     */
     private ArrayList<SudokuCellGroup> squares;
+
+    /**
+     * Currently selected cell.
+     */
     private SudokuGridCell selectedCell;
+
+    /**
+     * Handle to number group manager.
+     */
     private NumberGroupManager numberGroupManager;
+
+    /**
+     * Sudoku Data to display in the grid.
+     */
     private Sudoku sudokuData;
 
+    /**
+     * Creates a sudoku grid with given values.
+     *
+     * @param parent             Parent of the grid.
+     * @param cellSelectListener Handle to cell selection listener.
+     */
     public SudokuGrid(Activity parent, CellSelectListener cellSelectListener) {
         this.parent = parent;
         this.cellSelectListener = cellSelectListener;
         this.numberGroupManager = new NumberGroupManager();
     }
 
+    /**
+     * Sets the sudoku data for this grid.
+     *
+     * @param sudokuData The sudoku data to set to this grid.
+     */
     public void setSudoku(Sudoku sudokuData) {
         this.sudokuData = sudokuData;
 
         int buttonSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, parent.getResources().getDisplayMetrics());
 
-        sudokuContainer = (TableLayout) parent.findViewById(R.id.sudokuContainer);
+        TableLayout sudokuContainer = (TableLayout) parent.findViewById(R.id.sudokuContainer);
 
         createEmptyCellGroups();
 
@@ -63,6 +110,11 @@ public class SudokuGrid {
         }
     }
 
+    /**
+     * Adds a cell to its groups.
+     *
+     * @param cell The cell to add to groups.
+     */
     private void addToGroups(SudokuGridCell cell) {
         int x = cell.getCellX();
         int y = cell.getCellY();
@@ -82,12 +134,22 @@ public class SudokuGrid {
         cell.setSquareGroup(squareGroup);
     }
 
+    /**
+     * Finds a square group for given cell coordinates.
+     *
+     * @param x X coordinate of the cell.
+     * @param y Y coordinate of the cell.
+     * @return One dimensional index to square groups.
+     */
     private int findSquareGroupFor(int x, int y) {
         int column = x / 3;
         int row = y / 3;
-        return column + (row*3);
+        return column + (row * 3);
     }
 
+    /**
+     * Creates empty cell groups.
+     */
     private void createEmptyCellGroups() {
         rows = new ArrayList<>();
         columns = new ArrayList<>();
@@ -100,11 +162,22 @@ public class SudokuGrid {
         }
     }
 
+    /**
+     * Selects a cell at position x, y.
+     *
+     * @param x X coordinate of the cell to select.
+     * @param y Y coordinate of the cell to select.
+     */
     public void selectCell(int x, int y) {
         SudokuGridCell cell = rows.get(y).getCells().get(x);
         selectCell(cell);
     }
 
+    /**
+     * Selects a cell by reference.
+     *
+     * @param cell The cell to set as selected.
+     */
     public void selectCell(SudokuGridCell cell) {
         if (selectedCell != null) {
             selectedCell.setSelect(false);
@@ -122,6 +195,11 @@ public class SudokuGrid {
         numberGroupManager.highlightNumbers(cell.getValue());
     }
 
+    /**
+     * Places a number to the selected cell.
+     *
+     * @param number The number to place to the cell.
+     */
     public void placeNumberToSelected(int number) {
         if (selectedCell != null) {
             int oldValue = selectedCell.getValue();
@@ -135,17 +213,6 @@ public class SudokuGrid {
                 }
                 numberGroupManager.add(selectedCell);
                 numberGroupManager.highlightNumbers(number);
-            }
-        }
-    }
-
-    public void refresh() {
-        for (int y = 0; y < rows.size(); y++) {
-            List<SudokuGridCell> row = rows.get(y).getCells();
-            int rowSize = row.size();
-            for (int x = 0; x < rowSize; x++) {
-                int num = sudokuData.get(x, y);
-                row.get(x).setValue(num);
             }
         }
     }

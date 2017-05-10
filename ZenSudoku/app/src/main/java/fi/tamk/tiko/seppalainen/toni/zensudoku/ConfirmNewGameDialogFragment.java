@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-import java.io.Serializable;
-
 public class ConfirmNewGameDialogFragment extends DialogFragment {
 
 
@@ -26,7 +24,6 @@ public class ConfirmNewGameDialogFragment extends DialogFragment {
         return fragment;
     }
 
-
     /**
      * Creates an instance of dialog fragment.
      *
@@ -43,6 +40,13 @@ public class ConfirmNewGameDialogFragment extends DialogFragment {
         return fragment;
     }
 
+
+    /**
+     * Creates a dialog confirming the start of a new game.
+     *
+     * @param savedInstanceState The last saved instance state of the Fragment, or null if this is a freshly created Fragment.
+     * @return Dialog instance to be displayed by the Fragment.
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -75,8 +79,6 @@ public class ConfirmNewGameDialogFragment extends DialogFragment {
                 });
         return builder.create();
     }
-
-
 }
 
 

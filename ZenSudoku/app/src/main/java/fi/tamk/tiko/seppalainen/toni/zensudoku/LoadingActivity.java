@@ -1,13 +1,23 @@
 package fi.tamk.tiko.seppalainen.toni.zensudoku;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
-
+/**
+ * Represents an activity for loading the sudoku play view.
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0509
+ * @since 1.7
+ */
 public class LoadingActivity extends AppCompatActivity implements SudokuGenerationListener {
 
+    /**
+     * Sets up the activity when receiving a creation event.
+     *
+     * @param savedInstanceState Previously save instance or null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +67,9 @@ public class LoadingActivity extends AppCompatActivity implements SudokuGenerati
 
     }
 
+    /**
+     * Starts the game activity when the sudoku is done generating.
+     */
     @Override
     public void onSudokuReady() {
         Intent intent = new Intent(this, PlayActivity.class);

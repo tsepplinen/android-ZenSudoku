@@ -11,4 +11,5 @@
     <color name="colorSelectedBG">#3242FA</color>
     <color name="colorMainMenuButtonText">#FFFFFF</color>
     <color name="colorMainMenuButtonBG">#6800b3</color>
+    <color name="colorMainMenuButtonBGDisabled">#d6d6d6</color>
 </resources>

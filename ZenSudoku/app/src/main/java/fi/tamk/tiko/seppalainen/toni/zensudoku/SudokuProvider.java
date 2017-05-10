@@ -4,13 +4,40 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import fi.tamk.tiko.seppalainen.toni.zensudoku.sudoku.Sudoku;
 
+/**
+ * Provides sudoku puzzles.
+ *
+ * @author Toni Seppäläinen toni.seppalainen@cs.tamk.fi
+ * @version 2017.0509
+ * @since 1.7
+ */
 public class SudokuProvider {
 
+    /**
+     * Tells if easy puzzle is available.
+     */
     static AtomicBoolean easyAvailable = new AtomicBoolean(false);
+
+    /**
+     * Tells if medium puzzle is available.
+     */
     static AtomicBoolean mediumAvailable = new AtomicBoolean(false);
+
+    /**
+     * Tells if hard puzzle is available.
+     */
     static AtomicBoolean hardAvailable = new AtomicBoolean(false);
+
+    /**
+     * Stores the currently selected sudoku.
+     */
     private static Sudoku selectedSudoku;
 
+    /**
+     * Sets a sudoku as the currently selected sudoku.
+     *
+     * @param difficulty Chosen difficulty.
+     */
     public static void selectSudoku(int difficulty) {
         SaveManager saveManager = SaveManagerProvider.getSaveManager();
         SaveManager.SavedSudokuGame loaded;
@@ -20,29 +47,38 @@ public class SudokuProvider {
             selectSudoku(loaded);
             easyAvailable.set(false);
             saveManager.delete(Difficulty.EASY.toString());
-            System.out.println("Using pregenerated easy");
         } else if (difficulty == 40 && mediumAvailable.get()) {
             loaded = saveManager.load(Difficulty.MEDIUM.toString());
             selectSudoku(loaded);
             mediumAvailable.set(false);
             saveManager.delete(Difficulty.MEDIUM.toString());
-            System.out.println("Using pregenerated medium");
         } else if (difficulty == 30 && hardAvailable.get()) {
             loaded = saveManager.load(Difficulty.HARD.toString());
             selectSudoku(loaded);
             hardAvailable.set(false);
             saveManager.delete(Difficulty.HARD.toString());
-            System.out.println("Using pregenerated hard");
         } else {
-            System.out.println("Generating new sudoku");
             selectedSudoku = new Sudoku(difficulty);
         }
     }
 
+    /**
+     * Generates a sudoku with the given values.
+     *
+     * @param difficulty Difficulty of the sudoku.
+     * @param seed       Seed to use for generation.
+     */
     public static void selectSudoku(int difficulty, long seed) {
-        selectedSudoku =  new Sudoku(difficulty, seed);
+        selectedSudoku = new Sudoku(difficulty, seed);
     }
 
+    /**
+     * Generates a sudoku in the background
+     *
+     * @param difficulty Difficulty of the sudoku.
+     * @param seed       Seed to use for generation.
+     * @param listener   The listener that reacts to generation completion.
+     */
     public static void generateInBackground(final int difficulty, final long seed, final SudokuGenerationListener listener) {
         new Thread(new Runnable() {
             @Override
@@ -53,6 +89,12 @@ public class SudokuProvider {
         }).start();
     }
 
+    /**
+     * Generates a sudoku in the background
+     *
+     * @param difficulty Difficulty of the sudoku.
+     * @param listener   The listener that reacts to generation completion.
+     */
     public static void generateInBackground(final int difficulty, final LoadingActivity listener) {
         new Thread(new Runnable() {
             @Override
@@ -63,10 +105,18 @@ public class SudokuProvider {
         }).start();
     }
 
+    /**
+     * Selects a loaded sudoku.
+     *
+     * @param loaded The loaded sudoku data.
+     */
     public static void selectSudoku(SaveManager.SavedSudokuGame loaded) {
-        selectedSudoku =  new Sudoku(loaded.seed, loaded.data, loaded.initial, loaded.result, loaded.difficulty);
+        selectedSudoku = new Sudoku(loaded.seed, loaded.data, loaded.initial, loaded.result, loaded.difficulty);
     }
 
+    /**
+     * Preloads necessary puzzles.
+     */
     public static void preload() {
         final SaveManager saveManager = SaveManagerProvider.getSaveManager();
         checkStatus();
@@ -103,6 +153,11 @@ public class SudokuProvider {
         hardAvailable.set(saveManager.has(Difficulty.HARD.toString()));
     }
 
+    /**
+     * Retrieves the currently selected sudoku.
+     *
+     * @return The currently selected sudoku.
+     */
     public static Sudoku getSelectedSudoku() {
         return selectedSudoku;
     }
